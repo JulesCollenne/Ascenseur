@@ -6,7 +6,7 @@ import java.awt.*;
 public class Panneau extends JPanel {
 
     Cabine cabine = new Cabine(50,420);
-    Immeuble immeuble = new Immeuble(0,0);
+    Immeuble immeuble = new Immeuble(0,0,12);
 
     public void paintComponent(Graphics g){
         g.setColor(Color.white);
