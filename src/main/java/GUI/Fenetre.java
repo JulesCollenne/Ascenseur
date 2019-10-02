@@ -4,42 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Fenetre extends JFrame{
-    private Panneau visuPan = new Panneau();
 
     public Fenetre(){
         this.setTitle("Ascenseur");
-        this.setSize(600, 500);
+        this.setSize(800, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
         CabinePad cabinePad = new CabinePad();
         CabinePrintFloor cabinePF = new CabinePrintFloor();
 
-        JPanel controlsPan = new JPanel();
+        Panneau visuPan = new Panneau();
+        JPanel controlsPan1 = cabinePad.buildPad();
+        JPanel controlsPan2 = cabinePF.buildFloor();
 
-        cabinePad.buildPad(controlsPan);
-        cabinePF.buildFloor(controlsPan);
+        this.getContentPane().add(controlsPan1, null);
+        this.getContentPane().add(controlsPan2, null);
+        this.getContentPane().add(visuPan, null);
 
-        this.add(visuPan, BorderLayout.WEST);
-        this.add(controlsPan, BorderLayout.EAST);
-
-        this.setContentPane(visuPan);
+        //this.setContentPane(visuPan);
 
         this.setVisible(true);
-        run();
-    }
-
-    private void run(){
-        /*
-        while(true) {
-            //pan.cabine.moveUp();
-            visuPan.repaint();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        */
     }
 }

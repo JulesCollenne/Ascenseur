@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class CabinePad {
 
-    public static void buildPad(JPanel panel){
-
+    public static JPanel buildPad(){
+        JPanel panel = new JPanel();
         panel.setBounds(500,400,200,250);
 
         panel.setLayout(new GridLayout(6,2));
@@ -38,5 +38,7 @@ public class CabinePad {
         panel.add(bouton10);
 
         panel.setBackground(Color.WHITE);
+
+        return panel;
     }
 }
