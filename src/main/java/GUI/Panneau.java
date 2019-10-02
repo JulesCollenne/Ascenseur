@@ -5,8 +5,12 @@ import java.awt.*;
 
 public class Panneau extends JPanel {
 
-    Cabine cabine = new Cabine(120,420);
-    Immeuble immeuble = new Immeuble(50,0,12);
+    Immeuble immeuble = new Immeuble(50,0);
+
+    int x = immeuble.etages[9].x + immeuble.width+5;
+    int y = immeuble.etages[9].y;
+
+    Cabine cabine = new Cabine(x,y);
 
     public void paintComponent(Graphics g){
         g.setColor(Color.white);

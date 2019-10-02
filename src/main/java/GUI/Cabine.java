@@ -5,8 +5,8 @@ import java.awt.*;
 
 class Cabine {
 
-    int height = 40;
-    int width = 20;
+    int height = 600/10 + 15;
+    int width = 50;
 
     int x;
     int y;

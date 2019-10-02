@@ -9,16 +9,17 @@ public class Etage {
     int y;
     int height;
     int width;
+    int number;
+    Label numberFloor;
 
-    BoutonExterieur[] boutonsExt;
+    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
 
-    public Etage(int x, int y, int height, int width) {
+    public Etage(int x, int y, int height, int width,int number) {
         this.x = x;
         this.y = y;
         this.height = height;
         this.width = width;
-
-        boutonsExt = new BoutonExterieur[2];
+        this.number = number;
 
         boutonsExt[0] = new BoutonExterieur(10, y, true);
         boutonsExt[1] = new BoutonExterieur(10, y + height / 2, false);
