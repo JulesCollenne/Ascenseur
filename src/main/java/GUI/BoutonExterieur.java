@@ -19,9 +19,9 @@ public class BoutonExterieur extends JButton {
         this.montant = montant;
 
         if(montant)
-            this.setLabel("ʌ");
+            this.setLabel("↑");
         else
-            this.setLabel("v");
+            this.setLabel("↓");
         this.setLocation(x,y);
         this.setBounds(x,y,44,20);
     }
