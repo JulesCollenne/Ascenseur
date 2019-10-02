@@ -20,6 +20,11 @@ class Immeuble {
         this.x = x;
         this.y = y;
         this.nbEtages = nbEtages;
+
+        etages = new Etage[nbEtages];
+
+        for(int i = 0; i < nbEtages; i++)
+            etages[i] = new Etage(floorHeight,width);
     }
 
     void draw(Graphics g) {
