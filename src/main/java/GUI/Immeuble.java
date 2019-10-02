@@ -12,18 +12,14 @@ class Immeuble {
     int width = 50;
     int floorHeight = (int) (height / nbEtages) + 1;
 
-    BoutonExterieur[] boutonsExt;
+    Etage[] etages;
+
+
 
     Immeuble(int x, int y, int nbEtages) {
         this.x = x;
         this.y = y;
         this.nbEtages = nbEtages;
-        boutonsExt = new BoutonExterieur[nbEtages * 2];
-        for(int i = 0; i < boutonsExt.length; i ++) {
-            boutonsExt[i] = new BoutonExterieur(10, floorHeight/2 * i, true);
-            i++;
-            boutonsExt[i] = new BoutonExterieur(10, floorHeight/2 * i, false);
-        }
     }
 
     void draw(Graphics g) {
@@ -36,9 +32,8 @@ class Immeuble {
             g.drawRect(x, y, width, floorHeight * i);
         }
 
-        for (BoutonExterieur boutonExterieur : boutonsExt) {
-            boutonExterieur.draw(g);
+        for(Etage etage : etages){
+            etage.draw(g);
         }
-
     }
 }
