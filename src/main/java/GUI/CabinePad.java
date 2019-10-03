@@ -4,9 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 
-public class CabinePad {
+class CabinePad {
 
-    public static JPanel buildPad(){
+    static JPanel buildPad(){
         JPanel panel = new JPanel();
         panel.setBounds(500,400,200,250);
 

@@ -3,8 +3,8 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class CabinePrintFloor {
-    public static JPanel buildFloor(){
+class CabinePrintFloor {
+    static JPanel buildFloor(){
         JPanel panel = new JPanel();
         panel.setBounds(550, 300, 100 , 100);
         JTextArea floor = new JTextArea("Floor : ");

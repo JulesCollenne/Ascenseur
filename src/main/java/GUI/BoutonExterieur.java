@@ -3,17 +3,17 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class BoutonExterieur extends JButton {
+class BoutonExterieur extends JButton {
 
-    int height = 10;
-    int width = 10;
+    private int height = 10;
+    private int width = 10;
 
-    boolean montant;
+    private boolean montant;
 
-    int x;
-    int y;
+    private int x;
+    private int y;
 
-    public BoutonExterieur(int x, int y, boolean montant){
+    BoutonExterieur(int x, int y, boolean montant){
         this.x = x;
         this.y = y;
         this.montant = montant;

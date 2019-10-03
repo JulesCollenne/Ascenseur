@@ -1,19 +1,18 @@
 package GUI;
 
-import javax.swing.*;
 import java.awt.*;
 
 class Cabine {
 
-    int height = 600/10 + 15;
-    int width = 50;
+    private int height = 600/10 + 15;
+    private int width = 50;
 
-    int x;
-    int y;
+    private int x;
+    private int y;
 
-    int speed = 2;
+    private int speed = 2;
 
-    public Cabine(int x, int y) {
+    Cabine(int x, int y) {
         this.x = x;
         this.y = y;
     }
