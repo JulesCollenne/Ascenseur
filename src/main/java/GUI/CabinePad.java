@@ -2,6 +2,9 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 
 public class CabinePad {
@@ -12,30 +15,26 @@ public class CabinePad {
 
         panel.setLayout(new GridLayout(6,2));
 
-        JButton bouton0 = new JButton("0");
-        JButton bouton1 = new JButton("1");
-        JButton bouton2 = new JButton("2");
-        JButton bouton3 = new JButton("3");
-        JButton bouton4 = new JButton("4");
-        JButton bouton5 = new JButton("5");
-        JButton bouton6 = new JButton("6");
-        JButton bouton7 = new JButton("7");
-        JButton bouton8 = new JButton("8");
-        JButton bouton9 = new JButton("9");
-        JButton bouton10 = new JButton("A");
+        JButton boutons[] = new JButton[10];
 
+        for(int i = 0; i < 10; i++){
+            boutons[i] = new JButton(String.valueOf(i));
+            panel.add(boutons[i]);
+        }
 
-        panel.add(bouton0);
-        panel.add(bouton1);
-        panel.add(bouton2);
-        panel.add(bouton3);
-        panel.add(bouton4);
-        panel.add(bouton5);
-        panel.add(bouton6);
-        panel.add(bouton7);
-        panel.add(bouton8);
-        panel.add(bouton9);
-        panel.add(bouton10);
+        JButton boutonA = new JButton("A");
+
+        panel.add(boutonA);
+
+        for(int i=0; i<boutons.length; i++) {
+            final int finalI = i;
+            boutons[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Signaux.chosenFloor(finalI);
+                }
+            });
+        }
 
         panel.setBackground(Color.WHITE);
 

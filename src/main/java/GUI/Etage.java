@@ -10,7 +10,7 @@ public class Etage {
     int height;
     int width;
     int number;
-    Label numberFloor;
+    Capteur capteurEtage;
 
     BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
 
