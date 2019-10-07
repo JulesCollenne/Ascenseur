@@ -12,6 +12,8 @@ public class Panneau extends JPanel {
 
     private Cabine cabine = new Cabine(x,y);
 
+    private Moniteur moniteur = new Moniteur(cabine);
+
     public void paintComponent(Graphics g){
         g.setColor(Color.white);
         g.fillRect(0, 0, this.getWidth(), this.getHeight());

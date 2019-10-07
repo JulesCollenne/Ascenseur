@@ -31,7 +31,7 @@ class CabinePad {
             boutons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Signaux.chosenFloor(finalI);
+                    Moniteur.chosenFloor(finalI);
                 }
             });
         }
