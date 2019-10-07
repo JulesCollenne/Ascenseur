@@ -27,6 +27,8 @@ public class Fenetre extends JFrame{
         JPanel controlsPan1 = cabinePad.buildPad();
         JPanel controlsPan2 = CabinePrintFloor.buildFloor();
 
+        this.setBackground(Color.WHITE);
+
         this.getContentPane().add(controlsPan1, null);
         this.getContentPane().add(controlsPan2, null);
         this.getContentPane().add(visuPan, null);
