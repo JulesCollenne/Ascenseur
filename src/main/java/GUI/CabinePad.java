@@ -40,4 +40,5 @@ class CabinePad {
 
         return panel;
     }
+    /*salut*/
 }
