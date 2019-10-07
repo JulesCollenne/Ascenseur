@@ -133,4 +133,11 @@ public class Moniteur {
     }
 
 
+    public void emergency() {
+        cabine.currentMode = Cabine.mode.ArretUrgence;
+    }
+
+    public void boutonExt(int num) {
+
+    }
 }
