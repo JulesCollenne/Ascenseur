@@ -43,6 +43,13 @@ class CabinePad {
             });
         }
 
+        boutonA.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                moniteur.emergency();
+            }
+        });
+
         panel.setBackground(Color.WHITE);
 
         return panel;

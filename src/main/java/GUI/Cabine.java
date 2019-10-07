@@ -14,8 +14,9 @@ class Cabine {
     int position_x_inf;
     int position_y_inf;
 
-    enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv};
+    enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv, Arret};
 
+    mode currentMode = mode.Arret;
 
     int speed = 2;
 
@@ -32,7 +33,10 @@ class Cabine {
     }
 
     void moveUp(){
-        position_y_sup -= speed;
+        currentMode = mode.Monter;
+        while(currentMode == mode.Monter) {
+            position_y_sup -= speed;
+        }
     }
 
     void moveDown(){
@@ -44,6 +48,6 @@ class Cabine {
     }
 
     void emergencyStop(){
-
+        currentMode = mode.ArretUrgence;
     }
 }

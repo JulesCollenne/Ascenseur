@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Fenetre extends JFrame{
 
@@ -14,6 +15,8 @@ public class Fenetre extends JFrame{
 
         int x_cabine = immeuble.etages[9].x + immeuble.width+5;
         int y_cabine = immeuble.etages[9].y;
+
+        this.setBackground(Color.WHITE);
 
         Cabine cabine = new Cabine(x_cabine,y_cabine);
 

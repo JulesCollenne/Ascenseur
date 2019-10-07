@@ -17,6 +17,10 @@ public class Moniteur {
         panneau.repaint();
     }
 
+    public void emergency(){
+        cabine.emergencyStop();
+    }
+
     public void setPanneau(Panneau panneau) {
         this.panneau = panneau;
     }
@@ -92,6 +96,10 @@ public class Moniteur {
     public void goToNextFloor(){
 
 
+
+    }
+
+    public void boutonExt(int num) {
 
     }
 }
