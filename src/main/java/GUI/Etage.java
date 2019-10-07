@@ -3,16 +3,16 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-class Etage {
+public class Etage {
 
     int x;
     int y;
-    private int height;
-    private int width;
-    private int number;
+    int height;
+    int width;
+    int number;
     Label numberFloor;
 
-    private BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
+    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
 
     public Etage(int x, int y, int height, int width,int number) {
         this.x = x;
