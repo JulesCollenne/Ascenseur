@@ -9,7 +9,14 @@ import java.awt.event.ActionListener;
 
 class CabinePad {
 
-    static JPanel buildPad(){
+    private Moniteur moniteur = new Moniteur();
+
+    public CabinePad(Cabine cabine, Panneau panneau){
+        moniteur.setCabine(cabine);
+        moniteur.setPanneau(panneau);
+    }
+
+    JPanel buildPad(){
         JPanel panel = new JPanel();
         panel.setBounds(500,400,200,250);
 
@@ -31,7 +38,7 @@ class CabinePad {
             boutons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Signaux.chosenFloor(finalI);
+                    moniteur.chosenFloor(finalI);
                 }
             });
         }
