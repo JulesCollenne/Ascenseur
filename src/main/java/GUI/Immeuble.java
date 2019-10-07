@@ -9,9 +9,9 @@ class Immeuble {
     private int x;
     private int y;
 
-    int height = 600;
+    private int height = 600;
     int width = 50;
-    int floorHeight = (int) (height / nbEtages)+15;
+    private int floorHeight = (int) (height / nbEtages)+15;
 
     Etage[] etages;
 
@@ -28,16 +28,12 @@ class Immeuble {
 
     void draw(Graphics g) {
 
-        for(int i = 0; i < nbEtages; i++) {
-
-        }
-
         for(Etage etage : etages){
             etage.draw(g);
         }
     }
 
-    public void poseBoutons(JPanel panel) {
+    void poseBoutons(JPanel panel) {
         for(Etage etage : etages){
             etage.poseBoutons(panel);
         }
