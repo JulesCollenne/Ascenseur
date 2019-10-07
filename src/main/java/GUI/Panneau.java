@@ -15,7 +15,7 @@ public class Panneau extends JPanel {
 
     public void paintComponent(Graphics g){
         g.setColor(Color.white);
-        g.fillRect(0, 0, this.getWidth(), this.getHeight());
+        g.fillRect(0, 0, this.getWidth()/2, this.getHeight());
 
         this.setLayout(null);
 
