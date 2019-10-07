@@ -2,6 +2,8 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Etage {
 
@@ -14,7 +16,7 @@ public class Etage {
 
     BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
 
-    public Etage(int x, int y, int height, int width,int number) {
+    Etage(int x, int y, int height, int width,int number) {
         this.x = x;
         this.y = y;
         this.height = height;
@@ -23,9 +25,17 @@ public class Etage {
 
         boutonsExt[0] = new BoutonExterieur(10, y, true);
         boutonsExt[1] = new BoutonExterieur(10, y + height / 2, false);
+
+        boutonsExt[0].addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
-    public void draw(Graphics g){
+    void draw(Graphics g){
 
         g.setColor(Color.gray);
         g.fillRect(x, y, width, height);
@@ -36,7 +46,7 @@ public class Etage {
         boutonsExt[1].draw(g);
     }
 
-    public void poseBoutons(JPanel panel) {
+    void poseBoutons(JPanel panel) {
         panel.add(boutonsExt[0]);
         panel.add(boutonsExt[1]);
     }
