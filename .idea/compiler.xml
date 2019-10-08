@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Ascenseur" />
         <module name="Ascenseur2" />
+        <module name="Ascenseur3" />
       </profile>
     </annotationProcessing>
   </component>
