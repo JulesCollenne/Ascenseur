@@ -1,7 +1,11 @@
+import ControleCommande.Moniteur;
 import GUI.Fenetre;
 
 public class main {
     public static void main(String[] args){
-        Fenetre fenetre = new Fenetre();
+
+        Moniteur moniteur = new Moniteur();
+
+        Fenetre fenetre = new Fenetre(moniteur);
     }
 }

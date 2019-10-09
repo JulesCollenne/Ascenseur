@@ -49,7 +49,7 @@ class CabinePad {
         boutonA.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moniteur.emergency();
+                moniteur.arretUrgence();
             }
         });
 
