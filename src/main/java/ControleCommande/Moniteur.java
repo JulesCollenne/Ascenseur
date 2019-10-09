@@ -1,4 +1,8 @@
-package GUI;
+package ControleCommande;
+
+import GUI.Cabine;
+import GUI.Panneau;
+import Simulation.Simulation;
 
 import java.util.ArrayList;
 
@@ -6,6 +10,16 @@ public class Moniteur {
 
     Cabine cabine;
     Panneau panneau;
+    Simulation simulation = new Simulation(this);
+
+    static ArrayList<Integer> upQueue = new ArrayList<Integer>();
+    static ArrayList<Integer> downQueue = new ArrayList<Integer>();
+
+    int currentFloor = 0;
+    int maxFloor = 10;
+    boolean goingUp = true; //true si la cabine monte, false si elle descend
+    int actualCabineRequest = -1;
+
 
     public void setCabine(Cabine cabine){
         this.cabine = cabine;
@@ -21,18 +35,20 @@ public class Moniteur {
         this.panneau = panneau;
     }
 
-    static ArrayList<Integer> upQueue = new ArrayList<Integer>();
-    static ArrayList<Integer> downQueue = new ArrayList<Integer>();
 
-    int actualFloor = 0;
-    int maxFloor = 10;
-    boolean goingUp = true; //true si la cabine monte, false si elle descend
-    int actualCabineRequest = -1;
+    public void receiveFloorSignal(){
+        if(goingUp){
+            currentFloor++;
+        }
+        else{
+            currentFloor--;
+        }
+    }
 
     public void insideRequest(int numFloor){   // ajoute la requete faite depuis la cabine dans la file d'attente
 
-        if(actualCabineRequest == -1 && actualFloor != numFloor){  // S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
-            if(numFloor > actualFloor){
+        if(actualCabineRequest == -1 && currentFloor != numFloor){  // S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
+            if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){       // s'assure que 2 requete pour le même etage ne soientt pas accepté
                     actualCabineRequest = numFloor;
                     upQueue.add(numFloor);
@@ -70,19 +86,19 @@ public class Moniteur {
         System.out.println("downQueue: ");
         printList(downQueue);
 
-        if(actualFloor == maxFloor){        // on est en haut donc on cherche la prochaine requete en descendant
+        if(currentFloor == maxFloor){        // on est en haut donc on cherche la prochaine requete en descendant
             goingUp = false;
             return nearestRequest(false);
         }
 
-        if(actualFloor == 0){   // on est en bas donc on cherche la propchaine requete en montant
+        if(currentFloor == 0){   // on est en bas donc on cherche la propchaine requete en montant
             goingUp = true;
             return nearestRequest(true);
         }
 
         if(upQueue.size()+downQueue.size()==1){     // il ne reste plus qu'une requete, donc on y va peut importe si on monte ou on descend
             int tempNextFloor = nearestRequest(true);
-            if(tempNextFloor>actualFloor){
+            if(tempNextFloor> currentFloor){
                 goingUp = true;
                 return tempNextFloor;
             }
@@ -116,12 +132,12 @@ public class Moniteur {
         else{   // sinon on cherche la plus proche qui sur le chemin (ie dans le meme sens que toi et au dessus si tu monte, en dessous si tu descend)
             if (up) {
                 for (int i = 0; i < upQueue.size(); i++) {
-                    if((actualFloor < upQueue.get(i)) && (upQueue.get(i) - actualFloor < nearest)) { nearest = upQueue.get(i) - actualFloor; nearestInd = upQueue.get(i); }
+                    if((currentFloor < upQueue.get(i)) && (upQueue.get(i) - currentFloor < nearest)) { nearest = upQueue.get(i) - currentFloor; nearestInd = upQueue.get(i); }
                 }
             }
             else{
                 for (int i = 0; i < downQueue.size(); i++) {
-                    if((actualFloor > downQueue.get(i)) && (actualFloor - downQueue.get(i) < nearest)) { nearest = actualFloor - downQueue.get(i); nearestInd = downQueue.get(i); }
+                    if((currentFloor > downQueue.get(i)) && (currentFloor - downQueue.get(i) < nearest)) { nearest = currentFloor - downQueue.get(i); nearestInd = downQueue.get(i); }
                 }
             }
             return nearestInd;
@@ -130,10 +146,14 @@ public class Moniteur {
 
     public void goToFloor(int floor, boolean up){       // fait bouger la cabine vers l'étage demandé
 
-        if(up)
-            System.out.println("moving up to "+floor+"\n");
-        else
-            System.out.println("moving down to "+floor+"\n");
+        if(up) {
+            System.out.println("moving up to " + floor + "\n");
+            cabine.currentMode = Cabine.mode.Monter;
+        }
+        else {
+            System.out.println("moving down to " + floor + "\n");
+            cabine.currentMode = Cabine.mode.Descendre;
+        }
 
 
         /*
@@ -142,7 +162,7 @@ public class Moniteur {
 
          */
 
-        actualFloor = floor;
+        currentFloor = floor;
         Integer object = floor;
 
         if(floor == actualCabineRequest){ // La requete depuis la cabine a été réalisé, on peut en faire une nouvelle

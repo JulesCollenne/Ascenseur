@@ -1,5 +1,7 @@
 package GUI;
 
+import Simulation.Capteur;
+
 import javax.swing.*;
 import java.awt.*;
 

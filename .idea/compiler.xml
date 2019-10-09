@@ -6,9 +6,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="Ascenseurv3" />
         <module name="Ascenseur" />
-        <module name="Ascenseur2" />
         <module name="Ascenseur3" />
+        <module name="Ascenseur2" />
       </profile>
     </annotationProcessing>
   </component>

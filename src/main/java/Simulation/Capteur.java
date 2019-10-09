@@ -1,4 +1,4 @@
-package GUI;
+package Simulation;
 
 public class Capteur {
 

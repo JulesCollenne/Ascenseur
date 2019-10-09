@@ -3,7 +3,7 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-class Cabine {
+public class Cabine {
 
     int height = 600/10 + 15;
     int width = 50;
@@ -14,9 +14,9 @@ class Cabine {
     int position_x_inf;
     int position_y_inf;
 
-    enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv, Arret};
+    public enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv, Arret};
 
-    mode currentMode = mode.Arret;
+    public mode currentMode = mode.Arret;
 
     int speed = 2;
 
@@ -32,7 +32,7 @@ class Cabine {
         g.fillRect(position_x_sup, position_y_sup, width,height);
     }
 
-    void moveUp(){
+    public void moveUp(){
         currentMode = mode.Monter;
         while(currentMode == mode.Monter) {
             position_y_sup -= speed;
