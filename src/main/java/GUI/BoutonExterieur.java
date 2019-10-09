@@ -20,7 +20,7 @@ public class BoutonExterieur extends JButton {
     int x;
     int y;
 
-    public BoutonExterieur(int x, int y, boolean montant){
+    public BoutonExterieur(int x, int y, final boolean montant){
         this.x = x;
         this.y = y;
 
@@ -33,12 +33,6 @@ public class BoutonExterieur extends JButton {
         this.setLocation(x,y);
         this.setBounds(x,y,44,20);
 
-        this.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                moniteur.boutonExt(num);
-            }
-        });
     }
 
     void draw(Graphics g) {

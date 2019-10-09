@@ -1,17 +1,24 @@
 package GUI;
 
+import ControleCommande.Moniteur;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Fenetre extends JFrame{
 
-    public Fenetre(){
+    Moniteur moniteur;
+
+    public Fenetre(Moniteur moniteur){
+
+        this.moniteur = moniteur;
+
         this.setTitle("Ascenseur");
         this.setSize(800, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 
-        Immeuble immeuble = new Immeuble(50,0);
+        Immeuble immeuble = new Immeuble(50,0, moniteur);
 
         int x_cabine = immeuble.etages[9].x + immeuble.width+5;
         int y_cabine = immeuble.etages[9].y;
