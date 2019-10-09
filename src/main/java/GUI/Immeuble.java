@@ -1,9 +1,12 @@
 package GUI;
 
+import ControleCommande.Moniteur;
+import Simulation.Capteur;
+
 import javax.swing.*;
 import java.awt.*;
 
-class Immeuble {
+public class Immeuble {
     private int nbEtages = 10;
 
     private int x;
@@ -13,17 +16,21 @@ class Immeuble {
     int width = 50;
     private int floorHeight = (int) (height / nbEtages)+15;
 
-    Etage[] etages;
+    public Etage[] etages;
 
+    public Capteur[] capteurs = new Capteur[10];
 
-    Immeuble(int x, int y) {
+    Immeuble(int x, int y, Moniteur moniteur) {
         this.x = x;
         this.y = y;
 
         etages = new Etage[nbEtages];
 
-        for(int i = 0; i < nbEtages; i++)
-            etages[i] = new Etage(x, floorHeight* i, floorHeight,width, i);
+        for(int i = 0; i < nbEtages; i++) {
+            etages[i] = new Etage(x, floorHeight * i, floorHeight, width, i);
+            capteurs[i] = new Capteur(floorHeight * i, i, moniteur);
+            capteurs[i].start();
+        }
     }
 
     void draw(Graphics g) {

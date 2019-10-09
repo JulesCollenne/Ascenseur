@@ -1,5 +1,6 @@
 package GUI;
 
+import ControleCommande.Moniteur;
 import Simulation.Capteur;
 
 import javax.swing.*;
@@ -12,9 +13,8 @@ public class Etage {
     int height;
     int width;
     int number;
-    Capteur capteurEtage;
 
-    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
+    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];
 
     public Etage(int x, int y, int height, int width,int number) {
         this.x = x;

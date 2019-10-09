@@ -6,7 +6,7 @@ import java.awt.*;
 public class Panneau extends JPanel {
 
     Cabine cabine;
-    Immeuble immeuble;
+    public Immeuble immeuble;
 
     public Panneau(Immeuble immeuble, Cabine cabine){
         this.immeuble= immeuble;

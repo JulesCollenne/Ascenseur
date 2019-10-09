@@ -11,9 +11,10 @@ import java.awt.event.ActionListener;
 
 class CabinePad {
 
-    private Moniteur moniteur = new Moniteur();
+    private Moniteur moniteur;
 
-    public CabinePad(Cabine cabine, Panneau panneau){
+    public CabinePad(Cabine cabine, Panneau panneau,Moniteur moniteur){
+        this.moniteur = moniteur;
         moniteur.setCabine(cabine);
         moniteur.setPanneau(panneau);
     }

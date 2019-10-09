@@ -8,9 +8,8 @@ import java.util.ArrayList;
 
 public class Moniteur {
 
-    Cabine cabine;
-    Panneau panneau;
-    Simulation simulation = new Simulation(this);
+    public Cabine cabine;
+    public Panneau panneau;
 
     static ArrayList<Integer> upQueue = new ArrayList<Integer>();
     static ArrayList<Integer> downQueue = new ArrayList<Integer>();
@@ -25,16 +24,9 @@ public class Moniteur {
         this.cabine = cabine;
     }
 
-    public void chosenFloor(int numFloor){
-        System.out.println(numFloor);
-        cabine.moveUp();
-        panneau.repaint();
-    }
-
     public void setPanneau(Panneau panneau) {
         this.panneau = panneau;
     }
-
 
     public void receiveFloorSignal(){
         if(goingUp){
@@ -153,14 +145,8 @@ public class Moniteur {
         else {
             System.out.println("moving down to " + floor + "\n");
             cabine.currentMode = Cabine.mode.Descendre;
+            System.out.println("Mode : " + cabine.currentMode);
         }
-
-
-        /*
-
-        faire bouger l'ascenseur
-
-         */
 
         currentFloor = floor;
         Integer object = floor;
@@ -183,12 +169,9 @@ public class Moniteur {
             goToFloor(searchNextFloor(), goingUp);
 
         }
-
-
     }
 
     public void printList(ArrayList<Integer> list){
-
         for(int i=0; i<list.size();i++){
             System.out.println(i+": "+list.get(i));
         }
@@ -201,5 +184,14 @@ public class Moniteur {
 
     public void boutonExt(int num) {
 
+    }
+
+    public void detecteCapteur() {
+        cabine.estDetecte = true;
+        System.out.println();
+        int etagesRestant = actualCabineRequest - currentFloor;
+        if(etagesRestant == 1 || etagesRestant == -1){
+            cabine.currentMode = Cabine.mode.ArretProchainNiv;
+        }
     }
 }
