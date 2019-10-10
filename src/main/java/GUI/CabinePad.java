@@ -8,14 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-
 class CabinePad {
 
-    private Moniteur moniteur = new Moniteur();
+    private Moniteur moniteur;
 
-    public CabinePad(Cabine cabine, Panneau panneau){
-        moniteur.setCabine(cabine);
-        moniteur.setPanneau(panneau);
+    public CabinePad(Moniteur moniteur){
+        this.moniteur = moniteur;
     }
 
     JPanel buildPad(){
@@ -48,7 +46,7 @@ class CabinePad {
         boutonA.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                moniteur.arretUrgence();
+                moniteur.emergency();
             }
         });
 
@@ -56,5 +54,4 @@ class CabinePad {
 
         return panel;
     }
-    /*salut*/
 }

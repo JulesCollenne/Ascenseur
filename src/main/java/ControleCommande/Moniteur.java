@@ -8,9 +8,8 @@ import java.util.ArrayList;
 
 public class Moniteur {
 
-    Cabine cabine;
-    Panneau panneau;
-    Simulation simulation = new Simulation(this);
+    public Cabine cabine;
+    public Panneau panneau;
 
     static ArrayList<Integer> upQueue = new ArrayList<Integer>();
     static ArrayList<Integer> downQueue = new ArrayList<Integer>();
@@ -19,34 +18,15 @@ public class Moniteur {
     int maxFloor = 10;
     boolean goingUp = true; //true si la cabine monte, false si elle descend
     int actualCabineRequest = -1;
-    boolean floorRequest[] = new boolean[10];
-    boolean arretUrgence = false;
-
-    public Moniteur(){
-
-        for(int i=0; i<10; i++){
-
-            floorRequest[i] = false;
-
-        }
-
-    }
 
 
     public void setCabine(Cabine cabine){
         this.cabine = cabine;
     }
 
-    public void chosenFloor(int numFloor){
-        System.out.println(numFloor);
-        cabine.moveUp();
-        panneau.repaint();
-    }
-
     public void setPanneau(Panneau panneau) {
         this.panneau = panneau;
     }
-
 
     public void receiveFloorSignal(){
         if(goingUp){
@@ -59,7 +39,7 @@ public class Moniteur {
 
     public void insideRequest(int numFloor){   // ajoute la requete faite depuis la cabine dans la file d'attente
 
-        if((actualCabineRequest == -1) && (currentFloor != numFloor) && (!arretUrgence)){  // S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
+        if(actualCabineRequest == -1 && currentFloor != numFloor){  // S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
             if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){       // s'assure que 2 requete pour le même etage ne soientt pas accepté
                     actualCabineRequest = numFloor;
@@ -78,32 +58,16 @@ public class Moniteur {
 
     }
 
-    public void outSideRequest(int numFloor, boolean isAskingUp){
+    public void outSideRequest(int numFloor, boolean isAskingUp){   // a faire: verifier que 2 requetes ne soit pas faites depuis le même étages
 
-        if((!floorRequest[numFloor]) && (currentFloor != numFloor) && (!arretUrgence)) {// vérifie qu'une requete n'a pas deja été faite a cette étage
-            floorRequest[numFloor] = true;
-            if (isAskingUp) { // s'il demande a monter, on l'ajoute a upQueue
-                upQueue.add(numFloor);
-                goToFloor(searchNextFloor(), goingUp);  // on va vers la prochaine étape
-            } else {   // sinon on l'ajoute a downQueue;
-                downQueue.add(numFloor);
-                goToFloor(searchNextFloor(), goingUp);   // on va vers la prochaine étape
-            }
+        if(isAskingUp){ // s'il demande a monter, on l'ajoute a upQueue
+            upQueue.add(numFloor);
+            goToFloor(searchNextFloor(), goingUp);  // on va vers la prochaine étape
         }
-
-    }
-
-    public void arretUrgence(){
-
-        if(false) {
-            upQueue.clear();
-            downQueue.clear();
+        else{   // sinon on l'ajoute a downQueue;
+            downQueue.add(numFloor);
+            goToFloor(searchNextFloor(), goingUp);   // on va vers la prochaine étape
         }
-        else{
-            goToFloor(0, false);
-        }
-
-
 
     }
 
@@ -160,12 +124,12 @@ public class Moniteur {
         else{   // sinon on cherche la plus proche qui sur le chemin (ie dans le meme sens que toi et au dessus si tu monte, en dessous si tu descend)
             if (up) {
                 for (int i = 0; i < upQueue.size(); i++) {
-                    if((currentFloor+1 < upQueue.get(i)) && (upQueue.get(i) - currentFloor+1 < nearest)) { nearest = upQueue.get(i) - currentFloor; nearestInd = upQueue.get(i); }
+                    if((currentFloor < upQueue.get(i)) && (upQueue.get(i) - currentFloor < nearest)) { nearest = upQueue.get(i) - currentFloor; nearestInd = upQueue.get(i); }
                 }
             }
             else{
                 for (int i = 0; i < downQueue.size(); i++) {
-                    if((currentFloor-1 > downQueue.get(i)) && (currentFloor-1 - downQueue.get(i) < nearest)) { nearest = currentFloor - downQueue.get(i); nearestInd = downQueue.get(i); }
+                    if((currentFloor > downQueue.get(i)) && (currentFloor - downQueue.get(i) < nearest)) { nearest = currentFloor - downQueue.get(i); nearestInd = downQueue.get(i); }
                 }
             }
             return nearestInd;
@@ -176,19 +140,13 @@ public class Moniteur {
 
         if(up) {
             System.out.println("moving up to " + floor + "\n");
-            //cabine.currentMode = Cabine.mode.Monter;
+            cabine.currentMode = Cabine.mode.Monter;
         }
         else {
             System.out.println("moving down to " + floor + "\n");
-            //cabine.currentMode = Cabine.mode.Descendre;
+            cabine.currentMode = Cabine.mode.Descendre;
+            System.out.println("Mode : " + cabine.currentMode);
         }
-
-
-        /*
-
-        faire bouger l'ascenseur
-
-         */
 
         currentFloor = floor;
         Integer object = floor;
@@ -197,26 +155,43 @@ public class Moniteur {
             actualCabineRequest = -1;
         }
 
-        floorRequest[currentFloor] = false;
-        upQueue.remove(object);
-        downQueue.remove(object);
+        if(up){
+            upQueue.remove(object);
+        }
+        else{
+            downQueue.remove(object);
+        }
 
         // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
 
         if(upQueue.size() > 0 || downQueue.size() > 0){     // une fois arrivé et attendu, on repart vers la prochaine étape si il y en a dans la liste, sinon on attant la prochaine
-                                                            // requete donc on fait rien
+            // requete donc on fait rien
             goToFloor(searchNextFloor(), goingUp);
 
         }
-
-
     }
 
     public void printList(ArrayList<Integer> list){
-
         for(int i=0; i<list.size();i++){
             System.out.println(i+": "+list.get(i));
         }
     }
 
+
+    public void emergency() {
+        cabine.currentMode = Cabine.mode.ArretUrgence;
+    }
+
+    public void boutonExt(int num) {
+
+    }
+
+    public void detecteCapteur() {
+        cabine.estDetecte = true;
+        System.out.println();
+        int etagesRestant = actualCabineRequest - currentFloor;
+        if(etagesRestant == 1 || etagesRestant == -1){
+            cabine.currentMode = Cabine.mode.ArretProchainNiv;
+        }
+    }
 }
