@@ -4,10 +4,10 @@ import ControleCommande.Moniteur;
 
 public class Capteur extends Thread {
 
-    Moniteur moniteur;
+    private Moniteur moniteur;
 
-    int positionY;
-    int num_etage;
+    private int positionY;
+    private int num_etage;
 
     public Capteur(int positionY, int num_etage, Moniteur moniteur){
         this.positionY = positionY;
@@ -15,10 +15,13 @@ public class Capteur extends Thread {
         this.moniteur = moniteur;
     }
 
-    public boolean detecteCabine(){
+    private boolean detecteCabine(){
         return positionY == moniteur.cabine.position_y_inf;
     }
 
+    /**
+     * Lance le thread capteur
+     */
     public void run(){
         while(true) {
             if (detecteCabine()) {
@@ -27,6 +30,10 @@ public class Capteur extends Thread {
         }
     }
 
+    /**
+     * Set le moniteur
+     * @param moniteur le moniteur
+     */
     public void setMoniteur(Moniteur moniteur) {
         this.moniteur = moniteur;
     }

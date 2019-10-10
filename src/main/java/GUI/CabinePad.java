@@ -12,10 +12,14 @@ class CabinePad {
 
     private Moniteur moniteur;
 
-    public CabinePad(Moniteur moniteur){
+    CabinePad(Moniteur moniteur){
         this.moniteur = moniteur;
     }
 
+    /**
+     * Construit le panel du pad
+     * @return le panel
+     */
     JPanel buildPad(){
         JPanel panel = new JPanel();
         panel.setBounds(500,400,200,250);

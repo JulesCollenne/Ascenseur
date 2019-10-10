@@ -5,18 +5,17 @@ import Simulation.Capteur;
 import javax.swing.*;
 import java.awt.*;
 
-public class Etage {
+class Etage {
 
-    int x;
-    int y;
-    int height;
-    int width;
-    int number;
-    Capteur capteurEtage;
+    private int x;
+    private int y;
+    private int height;
+    private int width;
+    private int number;
 
     BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
 
-    public Etage(int x, int y, int height, int width,int number) {
+    Etage(int x, int y, int height, int width, int number) {
         this.x = x;
         this.y = y;
         this.height = height;
@@ -27,7 +26,11 @@ public class Etage {
         boutonsExt[1] = new BoutonExterieur(10, y + height / 2, false);
     }
 
-    public void draw(Graphics g){
+    /**
+     * Dessine l'etage
+     * @param g graphics
+     */
+    void draw(Graphics g){
 
         g.setColor(Color.gray);
         g.fillRect(x, y, width, height);
@@ -38,7 +41,11 @@ public class Etage {
         boutonsExt[1].draw(g);
     }
 
-    public void poseBoutons(JPanel panel) {
+    /**
+     * Pose les boutons exterieurs
+     * @param panel le panneau auquel on ajoute les boutons exterieurs
+     */
+    void poseBoutons(JPanel panel) {
         panel.add(boutonsExt[0]);
         panel.add(boutonsExt[1]);
     }

@@ -7,11 +7,7 @@ import java.awt.*;
 
 public class Fenetre extends JFrame{
 
-    Moniteur moniteur;
-
     public Fenetre(Moniteur moniteur){
-
-        this.moniteur = moniteur;
 
         this.setTitle("Ascenseur");
         this.setSize(800, 800);

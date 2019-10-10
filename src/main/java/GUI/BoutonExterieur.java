@@ -51,6 +51,10 @@ public class BoutonExterieur extends JButton {
         }
     }
 
+    /**
+     * Affiche les boutons
+     * @param g graphics
+     */
     void draw(Graphics g) {
         g.setColor(Color.BLUE);
         g.drawOval(x,y,width,height);

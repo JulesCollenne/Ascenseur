@@ -5,46 +5,49 @@ import java.awt.*;
 
 public class Cabine extends Thread {
 
-    int height = 600/10 + 15;
-    int width = 50;
+    private int height = 600/10 + 15;
+    private int width = 50;
 
-    int position_x_sup;
-    int position_y_sup;
+    private int position_x_sup;
+    private int position_y_sup;
 
-    int position_x_inf;
+    private int position_x_inf;
     public int position_y_inf;
 
     public boolean estDetecte;
     private Panneau panneau;
 
-    public void setPanneau(Panneau panneau) {
+    void setPanneau(Panneau panneau) {
         this.panneau = panneau;
     }
 
     public enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv, Arret};
-    boolean goingUp;
+    private boolean goingUp;
 
     public volatile mode currentMode = mode.Arret;
 
-    int speed = 1;
+    private int speed = 1;
 
-    public Cabine(int x, int y) {
+    Cabine(int x, int y) {
+        this.position_x_inf = x;
         this.position_x_sup = x;
         this.position_y_sup = y;
-        this.position_x_inf = x + width;
         this.position_y_inf = y + height;
     }
 
+    /**
+     * Affiche la cabine
+     * @param g graphics
+     */
     void draw(Graphics g) {
         g.setColor(Color.magenta);
         g.fillRect(position_x_sup, position_y_sup, width,height);
     }
 
-    void moveDown(){
-        position_y_sup += speed;
-    }
-
-    void stopNextFloor(){
+    /**
+     * S'arrete au prochain etage
+     */
+    private void stopNextFloor(){
         if(goingUp){
             if(!estDetecte){
                 position_x_inf--;
@@ -65,6 +68,9 @@ public class Cabine extends Thread {
         }
     }
 
+    /**
+     * Lancement du thread Cabine
+     */
     public void run(){
         while(true){
             switch(currentMode){

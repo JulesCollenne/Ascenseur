@@ -4,6 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 class CabinePrintFloor {
+
+    /**
+     * Construit le panel
+     * @return le panel
+     */
     static JPanel buildFloor(){
         JPanel panel = new JPanel();
         panel.setBounds(550, 300, 100 , 100);
