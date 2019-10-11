@@ -22,7 +22,7 @@ public class Cabine extends Thread {
     }
 
     public enum mode {Monter, Descendre, ArretUrgence, ArretProchainNiv, Arret};
-    private boolean goingUp;
+    public boolean goingUp;
 
     public volatile mode currentMode = mode.Arret;
 
@@ -50,7 +50,8 @@ public class Cabine extends Thread {
     private void stopNextFloor(){
         if(goingUp){
             if(!estDetecte){
-                position_x_inf--;
+                position_y_sup -= speed;
+                position_y_inf -= speed;
             }
             else{
                 estDetecte = false;
@@ -59,7 +60,8 @@ public class Cabine extends Thread {
         }
         else{
             if(!estDetecte){
-                position_x_inf++;
+                position_y_sup += speed;
+                position_y_inf += speed;
             }
             else{
                 estDetecte = false;
@@ -81,9 +83,9 @@ public class Cabine extends Thread {
                     position_y_inf -= speed;
                     break;
                 case Descendre:
+                    goingUp = false;
                     position_y_sup += speed;
                     position_y_inf += speed;
-                    goingUp = false;
                     break;
                 case ArretUrgence:
 
@@ -101,7 +103,7 @@ public class Cabine extends Thread {
             }
             panneau.repaint();
             try {
-                sleep(50);
+                sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

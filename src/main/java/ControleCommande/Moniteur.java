@@ -54,13 +54,12 @@ public class Moniteur {
         return currentCabineRequest > -1;
     }
 
+    //TODO Quand on appuie sur un bouton interne alors que la cabone bouge, elle change instantanément de direction : Elle ne devrait pas
     /**
      * ajoute la requete faite depuis la cabine dans la file d'attente
      * @param numFloor le numéro de l'étage demandé
      */
     public void insideRequest(int numFloor){
-
-
         if((currentCabineRequest == -1) && (currentFloor != numFloor) && (!arretUrgence)){  // S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
             if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){       // s'assure que 2 requete pour le même etage ne soientt pas accepté
@@ -76,11 +75,11 @@ public class Moniteur {
                     goToFloor(searchNextFloor(), goingUp);
                 }
             }
+            detecteCapteurActuel();
         }
-
     }
 
-
+    //TODO Quand on appuie un bouton exterieur, la cabine s'arrete à l'endroit ou était le bouton ext mais oublie la destination de base
     /**
      * Gère l'arrivée de requêtes des boutons extérieurs
      * @param numFloor le numéro de l'étage
@@ -101,7 +100,7 @@ public class Moniteur {
 
     }
 
-
+    //TODO L'arret d'urgence descend trop bas quand la cabine est à etage < 1
     /**
      *
      * Gère l'appuie sur l'arrêt d'urgence
@@ -113,16 +112,28 @@ public class Moniteur {
             arretUrgence = true;
             upQueue.clear();
             downQueue.clear();
+            cabine.currentMode = Cabine.mode.ArretUrgence;
         }
         else{   // second appui: reset a l'étage 0
-            goToFloor(0, false);
-            arretUrgence = false;
+            resetCabine();
         }
-
-
-
     }
 
+    /**
+     *
+     */
+    public void resetCabine(){
+        goingUp = false;
+        int floor = 0;
+        currentDestination = floor;
+        System.out.println("moving down to " + floor + "\n");
+
+        cabine.currentMode = Cabine.mode.Descendre;
+
+        floorRequest[currentFloor] = false;
+
+        // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
+    }
 
 
     /**
@@ -295,9 +306,32 @@ public class Moniteur {
         System.out.println("destination: "+currentDestination);
         System.out.println("etage restant: "+etagesRestant);
         if(etagesRestant == 1){
+            cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
         System.out.println();
     }
 
+    public void detecteCapteurActuel(){
+        cabine.estDetecte = false;
+
+        if(goingUp) {
+            cabinePrintFloor.number.setText(currentFloor+"");
+        }
+        else {
+            cabinePrintFloor.number.setText(currentFloor+"");
+        }
+
+        System.out.println(""+currentFloor);
+        int etagesRestant = Math.abs(currentDestination - currentFloor);
+        System.out.println("destination: "+currentDestination);
+        System.out.println("etage restant: "+etagesRestant);
+
+        cabine.goingUp = currentDestination - currentFloor > 0;
+
+        if(etagesRestant == 1){
+            cabine.currentMode = Cabine.mode.ArretProchainNiv;
+        }
+        System.out.println();
+    }
 }
