@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 
 class CabinePad {
 
-    private Moniteur moniteur;
+    private volatile Moniteur moniteur;
 
     CabinePad(Moniteur moniteur){
         this.moniteur = moniteur;

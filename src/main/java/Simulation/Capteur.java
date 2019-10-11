@@ -4,19 +4,30 @@ import ControleCommande.Moniteur;
 
 public class Capteur extends Thread {
 
-    private Moniteur moniteur;
+    private volatile Moniteur moniteur;
 
-    private int positionY;
-    private int num_etage;
+    int capteurs[] = new int[9];
 
-    public Capteur(int positionY, int num_etage, Moniteur moniteur){
-        this.positionY = positionY;
-        this.num_etage = num_etage;
+    public Capteur(Moniteur moniteur, int initial, int floorHeight){
         this.moniteur = moniteur;
+        for(int i = 0; i<9; i++){
+
+            capteurs[i] = initial-((i+1)*floorHeight);
+            System.out.println("new capteurs at "+capteurs[i]);
+
+        }
     }
 
     private boolean detecteCabine(){
-        return positionY == moniteur.cabine.position_y_inf;
+
+        int getY = moniteur.cabine.position_y_inf;
+        for(int i = 0; i<9; i++){
+            if(capteurs[i] == getY)
+                return true;
+        }
+
+        return false;
+
     }
 
     /**
@@ -25,6 +36,7 @@ public class Capteur extends Thread {
     public void run(){
         while(true) {
             if (detecteCabine()) {
+                System.out.println("DETECTE");
                 moniteur.detecteCapteur();
             }
         }

@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Panneau extends JPanel {
 
-    private Cabine cabine;
+    private volatile Cabine cabine;
     private Immeuble immeuble;
 
     Panneau(Immeuble immeuble, Cabine cabine){

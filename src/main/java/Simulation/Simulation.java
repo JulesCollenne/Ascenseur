@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Simulation extends Thread {
 
-    Moniteur moniteur;
+    public volatile Moniteur moniteur;
 
     volatile boolean detecte = false;
 

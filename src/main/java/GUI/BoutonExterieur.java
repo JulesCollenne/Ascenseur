@@ -15,8 +15,6 @@ public class BoutonExterieur extends JButton {
 
     boolean montant;
 
-    Moniteur moniteur;
-
     int x;
     int y;
 

@@ -21,19 +21,22 @@ class Immeuble {
 
     private Etage[] etages;
 
-    private Capteur[] capteurs = new Capteur[10];
+    volatile Moniteur moniteur;
 
     Immeuble(int x, int y, final Moniteur moniteur) {
         this.x = x;
         this.y = y;
 
+        this.moniteur = moniteur;
+
         etages = new Etage[nbEtages];
 
         for(int i = 0; i < nbEtages; i++) {
             etages[i] = new Etage(x, floorHeight * i, floorHeight, width, i);
-            capteurs[i] = new Capteur(floorHeight * i, i, moniteur);
-            capteurs[i].start();
         }
+
+        Capteur capteurs = new Capteur(moniteur, 750, floorHeight);
+        capteurs.start();
 
         for(int i = 0; i<nbEtages; i++) {
             final int finalI = nbEtages-i-1;
@@ -56,11 +59,11 @@ class Immeuble {
      * Set le moniteur
      * @param moniteur le moniteur
      */
-    void setMoniteurInCapteur(Moniteur moniteur){
+   /* void setMoniteurInCapteur(Moniteur moniteur){
         for(int i = 0; i < nbEtages; i++) {
             capteurs[i].setMoniteur(moniteur);
         }
-    }
+    }*/
 
     /**
      * Dessine l'immeuble

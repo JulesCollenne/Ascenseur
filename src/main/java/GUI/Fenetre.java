@@ -31,7 +31,7 @@ public class Fenetre extends JFrame{
 
         CabinePad cabinePad = new CabinePad(moniteur);
 
-        immeuble.setMoniteurInCapteur(moniteur);
+        //immeuble.setMoniteurInCapteur(moniteur);
 
         JPanel controlsPan1 = cabinePad.buildPad();
         JPanel controlsPan2 = CabinePrintFloor.buildFloor();

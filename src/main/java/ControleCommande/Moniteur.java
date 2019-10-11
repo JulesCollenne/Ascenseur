@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Moniteur {
 
-    public Cabine cabine;
+    public volatile Cabine cabine;
 
     private static ArrayList<Integer> upQueue = new ArrayList<Integer>();
     private static ArrayList<Integer> downQueue = new ArrayList<Integer>();
@@ -251,10 +251,17 @@ public class Moniteur {
      * Envoie le signal à la machine de s'arreter au prochain etage
      */
     public void detecteCapteur() {
+
         cabine.estDetecte = true;
         System.out.println();
-        int etagesRestant = currentCabineRequest - currentFloor;
-        if(etagesRestant == 1 || etagesRestant == -1){
+
+        if(goingUp)
+            currentFloor++;
+        else
+            currentFloor--;
+
+        int etagesRestant = Math.abs(currentCabineRequest - currentFloor);
+        if(etagesRestant == 1){
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
     }

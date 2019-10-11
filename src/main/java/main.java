@@ -6,6 +6,6 @@ public class main {
 
         Moniteur moniteur = new Moniteur();
 
-        Fenetre fenetre = new Fenetre(moniteur);
+        new Fenetre(moniteur);
     }
 }

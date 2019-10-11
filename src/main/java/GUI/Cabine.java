@@ -12,7 +12,7 @@ public class Cabine extends Thread {
     private int position_y_sup;
 
     private int position_x_inf;
-    public int position_y_inf;
+    public volatile int position_y_inf;
 
     public boolean estDetecte;
     private Panneau panneau;
@@ -77,9 +77,11 @@ public class Cabine extends Thread {
                 case Monter:
                     goingUp = true;
                     position_y_sup -= speed;
+                    position_y_inf -= speed;
                     break;
                 case Descendre:
                     position_y_sup += speed;
+                    position_y_inf += speed;
                     goingUp = false;
                     break;
                 case ArretUrgence:
