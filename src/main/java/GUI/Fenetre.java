@@ -24,6 +24,7 @@ public class Fenetre extends JFrame{
 
         moniteur.setCabine(cabine);
 
+
         Immeuble immeuble = new Immeuble(50,0, moniteur);
 
         Panneau visuPan = new Panneau(immeuble, cabine);

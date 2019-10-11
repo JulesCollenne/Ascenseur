@@ -56,6 +56,7 @@ class Immeuble {
     }
 
     /**
+     *
      * Set le moniteur
      * @param moniteur le moniteur
      */

@@ -26,6 +26,7 @@ class Etage {
         boutonsExt[1] = new BoutonExterieur(10, y + height / 2, false);
     }
 
+
     /**
      * Dessine l'etage
      * @param g graphics

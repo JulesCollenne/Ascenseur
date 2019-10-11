@@ -32,6 +32,7 @@ public class Capteur extends Thread {
         }
     }
 
+
     /**
      * Lance le thread capteur
      */

@@ -124,6 +124,7 @@ public class Moniteur {
     }
 
 
+
     /**
      * cherche le prochain arrêt de la cabine
      * @return le prochain arret de la cabine

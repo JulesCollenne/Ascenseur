@@ -68,6 +68,7 @@ public class Cabine extends Thread {
         }
     }
 
+
     /**
      * Lancement du thread Cabine
      */

@@ -33,6 +33,7 @@ public class BoutonExterieur extends JButton {
 
     }
 
+
     /**
      * Affiche les boutons
      * @param g graphics

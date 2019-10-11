@@ -28,3 +28,4 @@ public class Panneau extends JPanel {
         cabine.draw(g);
     }
 }
+

@@ -58,4 +58,5 @@ class CabinePad {
 
         return panel;
     }
+
 }
