@@ -33,22 +33,6 @@ public class BoutonExterieur extends JButton {
         this.setLocation(x,y);
         this.setBounds(x,y,44,20);
 
-        if(montant) {
-            this.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    moniteur.outSideRequest(num, true);
-                }
-            });
-        }
-        else{
-            this.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    moniteur.outSideRequest(num, false);
-                }
-            });
-        }
     }
 
     /**
