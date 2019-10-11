@@ -223,6 +223,22 @@ public class Moniteur {
             System.out.println("Mode : " + cabine.currentMode);
         }
 
+        Integer object = floor;
+
+        if(floor == currentCabineRequest){
+            currentCabineRequest = -1;
+        }
+        floorRequest[currentFloor] = false;
+        upQueue.remove(object);
+        downQueue.remove(object);
+
+        // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
+
+        if(upQueue.size() > 0 || downQueue.size() > 0){
+            // si pas de requete on fait rien
+            goToFloor(searchNextFloor(), goingUp);
+
+        }
     }
 
     // La cabine envoie un signal ici pour dire que l'ascenseur s'est stoppé a l'étage "floor" (quand elle est en mode arret prochain étage)
@@ -236,6 +252,8 @@ public class Moniteur {
         floorRequest[currentFloor] = false;
         upQueue.remove(object);
         downQueue.remove(object);
+
+
 
         if(upQueue.size() > 0 || downQueue.size() > 0){
             // si pas de requete on fait rien
@@ -271,7 +289,7 @@ public class Moniteur {
             cabinePrintFloor.number.setText(currentFloor+"");
         }
 
-        System.out.println("current floor: "+currentFloor);
+        System.out.println(""+currentFloor);
         int etagesRestant = Math.abs(currentDestination - currentFloor);
         System.out.println("destination: "+currentDestination);
         System.out.println("etage restant: "+etagesRestant);
