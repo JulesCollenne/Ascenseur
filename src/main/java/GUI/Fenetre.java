@@ -34,7 +34,7 @@ public class Fenetre extends JFrame{
         //immeuble.setMoniteurInCapteur(moniteur);
 
         JPanel controlsPan1 = cabinePad.buildPad();
-        JPanel controlsPan2 = CabinePrintFloor.buildFloor();
+        JPanel controlsPan2 = CabinePrintFloor.buildFloor(moniteur);
 
         this.setBackground(Color.WHITE);
 

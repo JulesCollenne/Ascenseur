@@ -6,28 +6,30 @@ public class Capteur extends Thread {
 
     private volatile Moniteur moniteur;
 
-    int capteurs[] = new int[9];
+    int capteurs[] = new int[10];
+
+    int lastYdetected = 750;
+    boolean detection = false;
 
     public Capteur(Moniteur moniteur, int initial, int floorHeight){
         this.moniteur = moniteur;
-        for(int i = 0; i<9; i++){
-
-            capteurs[i] = initial-((i+1)*floorHeight);
-            System.out.println("new capteurs at "+capteurs[i]);
-
+        for(int i = 0; i<10; i++){
+            capteurs[i] = initial-((i)*floorHeight);
         }
     }
 
-    private boolean detecteCabine(){
+    private void detecteCabine(){
 
         int getY = moniteur.cabine.position_y_inf;
+
         for(int i = 0; i<9; i++){
-            if(capteurs[i] == getY)
-                return true;
+            if(capteurs[i] == getY){
+                if(getY != lastYdetected){
+                    lastYdetected = getY;
+                    detection = true;
+                }
+            }
         }
-
-        return false;
-
     }
 
     /**
@@ -35,18 +37,12 @@ public class Capteur extends Thread {
      */
     public void run(){
         while(true) {
-            if (detecteCabine()) {
-                System.out.println("DETECTE");
+            detecteCabine();
+            if (detection) {
+                detection = false;
                 moniteur.detecteCapteur();
             }
         }
     }
 
-    /**
-     * Set le moniteur
-     * @param moniteur le moniteur
-     */
-    public void setMoniteur(Moniteur moniteur) {
-        this.moniteur = moniteur;
-    }
 }

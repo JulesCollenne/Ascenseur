@@ -1,15 +1,20 @@
 package GUI;
 
+import ControleCommande.Moniteur;
+
 import javax.swing.*;
 import java.awt.*;
 
-class CabinePrintFloor {
+public class CabinePrintFloor {
+
+
+    public static JTextArea number;
 
     /**
      * Construit le panel
      * @return le panel
      */
-    static JPanel buildFloor(){
+    static JPanel buildFloor(Moniteur moniteur){
         JPanel panel = new JPanel();
         panel.setBounds(550, 300, 100 , 100);
         JTextArea floor = new JTextArea("Floor : ");
@@ -17,9 +22,9 @@ class CabinePrintFloor {
         Font font = new Font("Verdana", Font.BOLD, 24);
         floor.setFont(font);
 
-        JTextArea number = new JTextArea("1");
+        number = new JTextArea("");
         number.setEditable(false);
-        number.setText("3");
+        number.setText(moniteur.currentFloor+"");
         number.setFont(font);
 
         panel.add(floor);
@@ -28,4 +33,5 @@ class CabinePrintFloor {
 
         return panel;
     }
+
 }

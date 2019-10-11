@@ -1,6 +1,7 @@
 package ControleCommande;
 
 import GUI.Cabine;
+import GUI.CabinePrintFloor;
 import GUI.Panneau;
 
 import java.util.ArrayList;
@@ -8,16 +9,18 @@ import java.util.ArrayList;
 public class Moniteur {
 
     public volatile Cabine cabine;
+    public CabinePrintFloor cabinePrintFloor;
 
     private static ArrayList<Integer> upQueue = new ArrayList<Integer>();
     private static ArrayList<Integer> downQueue = new ArrayList<Integer>();
 
-    int currentFloor = 0;
+    public int currentFloor = 0;
     int maxFloor = 10;
     boolean goingUp = true; //true si la cabine monte, false si elle descend
     int currentCabineRequest = -1;
     boolean floorRequest[] = new boolean[10];
     boolean arretUrgence = false;
+    public int currentDestination = -1;
 
     public Moniteur(){
 
@@ -77,7 +80,7 @@ public class Moniteur {
 
     }
 
-    //TODO : verifier que 2 requetes ne soit pas faites depuis le même étages
+
     /**
      * Gère l'arrivée de requêtes des boutons extérieurs
      * @param numFloor le numéro de l'étage
@@ -208,6 +211,8 @@ public class Moniteur {
      */
     private void goToFloor(int floor, boolean up){
 
+        currentDestination = floor;
+
         if(up) {
             System.out.println("moving up to " + floor + "\n");
             cabine.currentMode = Cabine.mode.Monter;
@@ -218,7 +223,11 @@ public class Moniteur {
             System.out.println("Mode : " + cabine.currentMode);
         }
 
-        currentFloor = floor;
+    }
+
+    // La cabine envoie un signal ici pour dire que l'ascenseur s'est stoppé a l'étage "floor" (quand elle est en mode arret prochain étage)
+    public void isStop(int floor){
+
         Integer object = floor;
 
         if(floor == currentCabineRequest){
@@ -228,13 +237,12 @@ public class Moniteur {
         upQueue.remove(object);
         downQueue.remove(object);
 
-        // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
-
         if(upQueue.size() > 0 || downQueue.size() > 0){
-            // si pas de requete donc on fait rien
+            // si pas de requete on fait rien
             goToFloor(searchNextFloor(), goingUp);
 
         }
+
     }
 
     /**
@@ -253,16 +261,24 @@ public class Moniteur {
     public void detecteCapteur() {
 
         cabine.estDetecte = true;
-        System.out.println();
 
-        if(goingUp)
+        if(goingUp) {
             currentFloor++;
-        else
+            cabinePrintFloor.number.setText(currentFloor+"");
+        }
+        else {
             currentFloor--;
+            cabinePrintFloor.number.setText(currentFloor+"");
+        }
 
-        int etagesRestant = Math.abs(currentCabineRequest - currentFloor);
+        System.out.println("current floor: "+currentFloor);
+        int etagesRestant = Math.abs(currentDestination - currentFloor);
+        System.out.println("destination: "+currentDestination);
+        System.out.println("etage restant: "+etagesRestant);
         if(etagesRestant == 1){
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
+        System.out.println();
     }
+
 }
