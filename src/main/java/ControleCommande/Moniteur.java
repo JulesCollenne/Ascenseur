@@ -318,6 +318,7 @@ public class Moniteur {
         System.out.println("current floor: "+currentFloor);
         int etagesRestant = Math.abs(currentDestination - currentFloor);
         if(etagesRestant == 1){
+            System.out.println("arret proche");
             cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
@@ -335,6 +336,8 @@ public class Moniteur {
         cabine.goingUp = currentDestination - currentFloor > 0;
 
         if(etagesRestant == 1){
+            System.out.println("arret proche");
+            cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
         System.out.println();
