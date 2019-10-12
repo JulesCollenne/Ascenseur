@@ -15,7 +15,7 @@ public class Moniteur {
     private static ArrayList<Integer> downQueue = new ArrayList<Integer>();
 
     public int currentFloor = 0;
-    int maxFloor = 10;
+    int maxFloor = 9;
     public boolean goingUp = true; //true si la cabine monte, false si elle descend
     int currentCabineRequest = -1;
     boolean floorRequest[] = new boolean[10];
@@ -207,8 +207,8 @@ public class Moniteur {
      */
     private int nearestRequest(boolean up) {
 
-        int nearest = 9;
-        int nearestInd = 9;
+        int nearest = 10;
+        int nearestInd = 10;
 
         if(upQueue.size() + downQueue.size() == 1){ // si c'est la derniere requete, on la récupere peu importe le sens de l'ascenseur
             System.out.println("derniere requete");
@@ -220,23 +220,64 @@ public class Moniteur {
         }
         else{   // sinon on cherche la plus proche qui sur le chemin (ie dans le meme sens que toi et au dessus si tu monte, en dessous si tu descend)
             if (up) {
+                System.out.println("searching here");
                 for (int i = 0; i < upQueue.size(); i++) {
                     if((currentFloor+1 < upQueue.get(i)) && (upQueue.get(i) - currentFloor+1 < nearest) || ((cabine.currentMode == Cabine.mode.Arret) && (currentFloor < upQueue.get(i)) && (upQueue.get(i) - currentFloor < nearest))) {
                         nearest = upQueue.get(i) - currentFloor+1; nearestInd = upQueue.get(i);
                     }
                 }
+                if(nearest == 10 && downQueue.size() != 0){
+                    goingUp = false;
+                    return searchClosestFloor();
+                }
+
             }
             else{
+                System.out.println("searching there");
                 for (int i = 0; i < downQueue.size(); i++) {
                     if((currentFloor-1 > downQueue.get(i)) && (currentFloor-1 - downQueue.get(i) < nearest))
                     {
                         nearest = currentFloor-1 - downQueue.get(i); nearestInd = downQueue.get(i);
                     }
                 }
+                if(nearest == 10){
+                    goingUp = true;
+                    return searchClosestFloor();
+                }
+
             }
             System.out.println("result: "+nearestInd);
             return nearestInd;
         }
+    }
+
+    public int searchClosestFloor(){
+
+
+        System.out.println("au secour");
+
+        int min = 10;
+        int floor = 10;
+
+        for(int i = 0; i<upQueue.size(); i++) {
+            if(Math.abs(currentFloor - upQueue.get(i)) < min) {
+                min = Math.abs(currentFloor - upQueue.get(i));
+                floor = upQueue.get(i);
+            }
+        }
+        for(int i = 0; i<downQueue.size(); i++) {
+            if(Math.abs(currentFloor - downQueue.get(i)) < min) {
+                min = Math.abs(currentFloor - downQueue.get(i));
+                floor = downQueue.get(i);
+            }
+        }
+
+        if(currentFloor - floor > 0)
+            goingUp = false;
+        else
+            goingUp = true;
+
+        return floor;
     }
 
     /**
