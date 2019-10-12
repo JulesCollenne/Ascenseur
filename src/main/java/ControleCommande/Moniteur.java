@@ -116,11 +116,13 @@ public class Moniteur {
             arretUrgence = true;
             upQueue.clear();
             downQueue.clear();
+            currentCabineRequest = -1;
+            for(int i =0; i<10; i++)
+                floorRequest[i] = false;
             cabine.currentMode = Cabine.mode.ArretUrgence;
         }
-        else{   // second appui: reset a l'étage 0
+        else   // second appui: reset a l'étage 0
             resetCabine();
-        }
     }
 
     /**
@@ -134,10 +136,19 @@ public class Moniteur {
             goingUp = false;
             int floor = 0;
             currentDestination = floor;
+
+            System.out.println("current floor: " + currentFloor);
             System.out.println("moving down to " + floor + "\n");
 
-            cabine.currentMode = Cabine.mode.Descendre;
-            floorRequest[currentFloor] = false;
+
+            if(currentFloor == 1) {
+                System.out.println("close");
+                cabine.currentMode = Cabine.mode.ArretProchainNiv;
+            }
+            else {
+                System.out.println("not close");
+                cabine.currentMode = Cabine.mode.Descendre;
+            }
         }
         arretUrgence = false;
         // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
@@ -258,8 +269,6 @@ public class Moniteur {
 
     // La cabine envoie un signal ici pour dire que l'ascenseur s'est stoppé a l'étage "floor" (quand elle est en mode arret prochain étage)
     public void isStop(){
-
-        System.out.println("arret a l'étage "+currentFloor);
 
         Integer object = currentFloor;
 

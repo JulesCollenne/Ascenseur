@@ -90,7 +90,7 @@ public class Cabine extends Thread {
                 case Monter:
                     goingUp = true;
                     try {
-                        sleep(0); // pour ajuster la speed
+                        sleep(1); // pour ajuster la speed
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -100,7 +100,7 @@ public class Cabine extends Thread {
                 case Descendre:
                     goingUp = false;
                     try {
-                        sleep(0);
+                        sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
