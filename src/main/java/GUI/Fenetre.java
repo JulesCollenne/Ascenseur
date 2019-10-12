@@ -23,6 +23,8 @@ public class Fenetre extends JFrame{
         cabine.start();
 
         moniteur.setCabine(cabine);
+        cabine.setMoniteur(moniteur);
+
 
         CabinePad cabinePad = new CabinePad(moniteur);
 

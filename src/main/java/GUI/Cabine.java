@@ -1,5 +1,7 @@
 package GUI;
 
+import ControleCommande.Moniteur;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +9,8 @@ public class Cabine extends Thread {
 
     private int height = 600/10 + 15;
     private int width = 50;
+
+    Moniteur moniteur;
 
     private int position_x_sup;
     private int position_y_sup;
@@ -35,6 +39,12 @@ public class Cabine extends Thread {
         this.position_y_inf = y + height;
     }
 
+    public void setMoniteur(Moniteur moniteur){
+
+        this.moniteur = moniteur;
+
+    }
+
     /**
      * Affiche la cabine
      * @param g graphics
@@ -48,7 +58,7 @@ public class Cabine extends Thread {
      * S'arrete au prochain etage
      */
     private void stopNextFloor(){
-        if(goingUp){
+        if(moniteur.goingUp){
             if(!estDetecte){
                 position_y_sup -= speed;
                 position_y_inf -= speed;
@@ -79,11 +89,21 @@ public class Cabine extends Thread {
             switch(currentMode){
                 case Monter:
                     goingUp = true;
+                    try {
+                        sleep(0); // pour ajuster la speed
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     position_y_sup -= speed;
                     position_y_inf -= speed;
                     break;
                 case Descendre:
                     goingUp = false;
+                    try {
+                        sleep(0);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     position_y_sup += speed;
                     position_y_inf += speed;
                     break;
@@ -95,6 +115,7 @@ public class Cabine extends Thread {
                     break;
                 case Arret:
                     try {
+                        moniteur.isStop();
                         sleep(2000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
