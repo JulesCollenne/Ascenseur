@@ -100,7 +100,6 @@ public class Moniteur {
 
     }
 
-    //TODO L'arret d'urgence descend trop bas quand la cabine est à etage < 1
     /**
      *
      * Gère l'appuie sur l'arrêt d'urgence
@@ -123,15 +122,19 @@ public class Moniteur {
      *
      */
     public void resetCabine(){
-        goingUp = false;
-        int floor = 0;
-        currentDestination = floor;
-        System.out.println("moving down to " + floor + "\n");
+        if(currentFloor == 0){
+            cabine.currentMode = Cabine.mode.Arret;
+        }
+        else{
+            goingUp = false;
+            int floor = 0;
+            currentDestination = floor;
+            System.out.println("moving down to " + floor + "\n");
 
-        cabine.currentMode = Cabine.mode.Descendre;
-
-        floorRequest[currentFloor] = false;
-
+            cabine.currentMode = Cabine.mode.Descendre;
+            floorRequest[currentFloor] = false;
+        }
+        arretUrgence = false;
         // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
     }
 
