@@ -10,6 +10,8 @@ public class Cabine extends Thread {
     private int height = 600/10 + 15;
     private int width = 50;
 
+    int afkTime = 0;
+
     Moniteur moniteur;
 
     private int position_x_sup;
@@ -88,35 +90,31 @@ public class Cabine extends Thread {
         while(true){
             switch(currentMode){
                 case Monter:
+                    afkTime = 0;
                     goingUp = true;
-                    try {
-                        sleep(1); // pour ajuster la speed
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     position_y_sup -= speed;
                     position_y_inf -= speed;
                     break;
                 case Descendre:
+                    afkTime = 0;
                     goingUp = false;
-                    try {
-                        sleep(1);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     position_y_sup += speed;
                     position_y_inf += speed;
                     break;
                 case ArretUrgence:
-
+                    afkTime = 0;
                     break;
                 case ArretProchainNiv:
+                    afkTime = 0;
                     stopNextFloor();
                     break;
                 case Arret:
                     try {
+                        if((moniteur.currentFloor != 0) && (afkTime >= 3))
+                            moniteur.detectAFK();
                         moniteur.isStop();
                         sleep(2000);
+                        afkTime++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

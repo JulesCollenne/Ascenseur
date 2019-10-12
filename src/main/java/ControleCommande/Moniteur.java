@@ -250,6 +250,8 @@ public class Moniteur {
 
         currentDestination = floor;
 
+        goingUp = up;
+
         if(Math.abs(currentDestination - currentFloor) > 1) {
             if (up) {
                 System.out.println("moving up to " + floor + "\n");
@@ -306,11 +308,11 @@ public class Moniteur {
 
         if(goingUp) {
             currentFloor++;
-            cabinePrintFloor.number.setText(currentFloor+"");
+            CabinePrintFloor.number.setText(currentFloor+"");
         }
         else {
             currentFloor--;
-            cabinePrintFloor.number.setText(currentFloor+"");
+            CabinePrintFloor.number.setText(currentFloor+"");
         }
 
         System.out.println("current floor: "+currentFloor);
@@ -336,5 +338,11 @@ public class Moniteur {
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
         System.out.println();
+    }
+
+    public void detectAFK(){
+
+        goToFloor(0, false);
+
     }
 }
