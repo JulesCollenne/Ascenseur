@@ -150,8 +150,6 @@ public class Moniteur {
                 cabine.currentMode = Cabine.mode.Descendre;
             }
         }
-        arretUrgence = false;
-        // try { sleep(1500); } catch (InterruptedException e) { e.printStackTrace(); } // on attend un peu
     }
 
 
@@ -321,6 +319,8 @@ public class Moniteur {
         floorRequest[currentFloor] = false;
         upQueue.remove(object);
         downQueue.remove(object);
+        arretUrgence = false;
+
 
         if(upQueue.size() > 0 || downQueue.size() > 0){
             // si pas de requete on fait rien
