@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Moniteur {
 
     public volatile Cabine cabine;
-    public CabinePrintFloor cabinePrintFloor;
 
     private static ArrayList<Integer> upQueue = new ArrayList<Integer>();
     private static ArrayList<Integer> downQueue = new ArrayList<Integer>();
@@ -60,13 +59,8 @@ public class Moniteur {
      * @param numFloor le numéro de l'étage demandé
      */
     public void insideRequest(int numFloor){
-        if(arretUrgence){
-            System.out.println("request detected but emergency state");
-        }else{
-            System.out.println("request detected and good to go");
-        }
+
         if((currentCabineRequest == -1) && (currentFloor != numFloor) && (!arretUrgence)){// S'assure que 2 requetes depuis la cabine ne soientt pas acceptés, et que l'on ai aps déja a l'étage demandé
-            System.out.println("demande a vers l'étage "+numFloor);
             if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){       // s'assure que 2 requete pour le même etage ne soientt pas accepté
                     currentCabineRequest = numFloor;
@@ -137,16 +131,10 @@ public class Moniteur {
             int floor = 0;
             currentDestination = floor;
 
-            System.out.println("current floor: " + currentFloor);
-            System.out.println("moving down to " + floor + "\n");
-
-
             if(currentFloor == 1) {
-                System.out.println("close");
                 cabine.currentMode = Cabine.mode.ArretProchainNiv;
             }
             else {
-                System.out.println("not close");
                 cabine.currentMode = Cabine.mode.Descendre;
             }
         }
@@ -158,10 +146,10 @@ public class Moniteur {
      * @return le prochain arret de la cabine
      */
     private int searchNextFloor(){
-        System.out.println("upQueue: ");
+        /*System.out.println("upQueue: ");
         printList(upQueue);
         System.out.println("downQueue: ");
-        printList(downQueue);
+        printList(downQueue);*/
 
         if(currentFloor == maxFloor){        // on est en haut donc on cherche la prochaine requete en descendant
             goingUp = false;
@@ -209,7 +197,6 @@ public class Moniteur {
         int nearestInd = 10;
 
         if(upQueue.size() + downQueue.size() == 1){ // si c'est la derniere requete, on la récupere peu importe le sens de l'ascenseur
-            System.out.println("derniere requete");
             if(upQueue.size()>0){
                 return upQueue.get(0);
             }
@@ -218,7 +205,6 @@ public class Moniteur {
         }
         else{   // sinon on cherche la plus proche qui sur le chemin (ie dans le meme sens que toi et au dessus si tu monte, en dessous si tu descend)
             if (up) {
-                System.out.println("searching here");
                 for (int i = 0; i < upQueue.size(); i++) {
                     if((currentFloor+1 < upQueue.get(i)) && (upQueue.get(i) - currentFloor+1 < nearest) || ((cabine.currentMode == Cabine.mode.Arret) && (currentFloor < upQueue.get(i)) && (upQueue.get(i) - currentFloor < nearest))) {
                         nearest = upQueue.get(i) - currentFloor+1; nearestInd = upQueue.get(i);
@@ -231,7 +217,6 @@ public class Moniteur {
 
             }
             else{
-                System.out.println("searching there");
                 for (int i = 0; i < downQueue.size(); i++) {
                     if((currentFloor-1 > downQueue.get(i)) && (currentFloor-1 - downQueue.get(i) < nearest))
                     {
@@ -244,15 +229,12 @@ public class Moniteur {
                 }
 
             }
-            System.out.println("result: "+nearestInd);
             return nearestInd;
         }
     }
 
     public int searchClosestFloor(){
 
-
-        System.out.println("au secour");
 
         int min = 10;
         int floor = 10;
@@ -293,16 +275,13 @@ public class Moniteur {
 
         if(Math.abs(currentDestination - currentFloor) > 1) {
             if (up) {
-                System.out.println("moving up to " + floor + "\n");
                 cabine.currentMode = Cabine.mode.Monter;
             } else {
-                System.out.println("moving down to " + floor + "\n");
                 cabine.currentMode = Cabine.mode.Descendre;
             }
         }
         else{
 
-            System.out.println("moving to close floor");
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
 
         }
@@ -349,39 +328,29 @@ public class Moniteur {
 
         if(goingUp) {
             currentFloor++;
-            CabinePrintFloor.number.setText(currentFloor+"");
         }
         else {
             currentFloor--;
-            CabinePrintFloor.number.setText(currentFloor+"");
         }
 
-        System.out.println("current floor: "+currentFloor);
         int etagesRestant = Math.abs(currentDestination - currentFloor);
         if(etagesRestant == 1){
-            System.out.println("arret proche");
             cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
-        System.out.println();
     }
 
     public void detecteCapteurActuel(){
         cabine.estDetecte = false;
 
-        System.out.println(""+currentFloor);
         int etagesRestant = Math.abs(currentDestination - currentFloor);
-        System.out.println("destination: "+currentDestination);
-        System.out.println("etage restant: "+etagesRestant);
 
         cabine.goingUp = currentDestination - currentFloor > 0;
 
         if(etagesRestant == 1){
-            System.out.println("arret proche");
             cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
-        System.out.println();
     }
 
     public void detectAFK(){

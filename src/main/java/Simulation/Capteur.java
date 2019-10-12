@@ -1,6 +1,7 @@
 package Simulation;
 
 import ControleCommande.Moniteur;
+import GUI.CabinePrintFloor;
 
 public class Capteur extends Thread {
 
@@ -15,7 +16,6 @@ public class Capteur extends Thread {
         this.moniteur = moniteur;
         for(int i = 0; i<10; i++){
             capteurs[i] = initial-((i)*floorHeight);
-            System.out.println("pos: "+(initial-((i)*floorHeight)));
         }
     }
 
@@ -39,6 +39,7 @@ public class Capteur extends Thread {
      */
     public void run(){
         while(true) {
+            CabinePrintFloor.number.setText(moniteur.currentFloor+"");
             detecteCabine();
             if (detection) {
                 detection = false;

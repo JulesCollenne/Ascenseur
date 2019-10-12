@@ -88,7 +88,9 @@ public class Cabine extends Thread {
      */
     public void run(){
         while(true){
+
             switch(currentMode){
+
                 case Monter:
                     afkTime = 0;
                     goingUp = true;
