@@ -4,6 +4,9 @@ import GUI.Cabine;
 
 import java.util.ArrayList;
 
+/**
+ * Le moniteur est le controle commande qui gère la file de requète et change le mode de la cabine
+ */
 public class Moniteur {
 
     public volatile Cabine cabine;
