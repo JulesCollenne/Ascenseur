@@ -106,7 +106,6 @@ public class Moniteur {
      *
      */
     public void arretUrgence(){
-
         if(!arretUrgence) {
             arretUrgence = true;
             upQueue.clear();
@@ -118,7 +117,6 @@ public class Moniteur {
         }
         else {
             resetCabine();
-            arretUrgence = false;
         }
     }
 
@@ -318,23 +316,42 @@ public class Moniteur {
         int etagesRestant;
         cabine.estDetecte = true;
 
-        etagesRestant = Math.abs(currentDestination - currentFloor);
+        if(arretUrgence){
+            etagesRestant = Math.abs(currentDestination - currentFloor);
+            if(etagesRestant == 1){
+                cabine.estDetecte = false;
+                cabine.currentMode = Cabine.mode.ArretProchainNiv;
+            }
+            if(etagesRestant == 0){
+                cabine.estDetecte = false;
+                cabine.currentMode = Cabine.mode.Arret;
+                arretUrgence = false;
+                return;
+            }
 
-        if(etagesRestant == 1){
-            cabine.estDetecte = false;
-            cabine.currentMode = Cabine.mode.ArretProchainNiv;
-        }
-        if(etagesRestant == 0){
-            cabine.estDetecte = false;
-            cabine.currentMode = Cabine.mode.Arret;
-            return;
-        }
-
-        if(goingUp) {
-            currentFloor++;
+            if(goingUp) {
+                currentFloor++;
+            }
+            else {
+                currentFloor--;
+            }
         }
         else {
-            currentFloor--;
+            if (goingUp) {
+                currentFloor++;
+            } else {
+                currentFloor--;
+            }
+            etagesRestant = Math.abs(currentDestination - currentFloor);
+
+            if (etagesRestant == 1) {
+                cabine.estDetecte = false;
+                cabine.currentMode = Cabine.mode.ArretProchainNiv;
+            }
+            if (etagesRestant == 0) {
+                cabine.estDetecte = false;
+                cabine.currentMode = Cabine.mode.Arret;
+            }
         }
     }
 
