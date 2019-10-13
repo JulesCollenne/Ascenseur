@@ -1,28 +1,16 @@
 package GUI;
 
-import ControleCommande.Moniteur;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class BoutonExterieur extends JButton {
+class BoutonExterieur extends JButton {
 
-    int height = 10;
-    int width = 10;
-    int num;
+    private int x;
+    private int y;
 
-    boolean montant;
-
-    int x;
-    int y;
-
-    public BoutonExterieur(int x, int y, boolean montant){
+    BoutonExterieur(int x, int y, boolean montant){
         this.x = x;
         this.y = y;
-
-        this.montant = montant;
 
         if(montant)
             this.setLabel("↑");
@@ -40,6 +28,8 @@ public class BoutonExterieur extends JButton {
      */
     void draw(Graphics g) {
         g.setColor(Color.BLUE);
-        g.drawOval(x,y,width,height);
+        int height = 10;
+        int width = 10;
+        g.drawOval(x,y, width, height);
     }
 }

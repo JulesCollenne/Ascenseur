@@ -8,16 +8,14 @@ import java.awt.*;
 public class Cabine extends Thread {
 
     private int height = 600/10 + 15;
-    private int width = 50;
 
-    int afkTime = 0;
+    private int afkTime = 0;
 
-    Moniteur moniteur;
+    private Moniteur moniteur;
 
     private int position_x_sup;
     private int position_y_sup;
 
-    private int position_x_inf;
     public volatile int position_y_inf;
 
     public boolean estDetecte;
@@ -35,16 +33,13 @@ public class Cabine extends Thread {
     private int speed = 1;
 
     Cabine(int x, int y) {
-        this.position_x_inf = x;
         this.position_x_sup = x;
         this.position_y_sup = y;
         this.position_y_inf = y + height;
     }
 
-    public void setMoniteur(Moniteur moniteur){
-
+    void setMoniteur(Moniteur moniteur){
         this.moniteur = moniteur;
-
     }
 
     /**
@@ -53,6 +48,7 @@ public class Cabine extends Thread {
      */
     void draw(Graphics g) {
         g.setColor(Color.magenta);
+        int width = 50;
         g.fillRect(position_x_sup, position_y_sup, width,height);
     }
 
@@ -88,9 +84,7 @@ public class Cabine extends Thread {
      */
     public void run(){
         while(true){
-
             switch(currentMode){
-
                 case Monter:
                     afkTime = 0;
                     goingUp = true;

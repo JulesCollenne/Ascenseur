@@ -1,7 +1,5 @@
 package GUI;
 
-import Simulation.Capteur;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,16 +9,14 @@ class Etage {
     private int y;
     private int height;
     private int width;
-    private int number;
 
-    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];;
+    BoutonExterieur[] boutonsExt = new BoutonExterieur[2];
 
-    Etage(int x, int y, int height, int width, int number) {
+    Etage(int x, int y, int height, int width) {
         this.x = x;
         this.y = y;
         this.height = height;
         this.width = width;
-        this.number = number;
 
         boutonsExt[0] = new BoutonExterieur(10, y, true);
         boutonsExt[1] = new BoutonExterieur(10, y + height / 2, false);

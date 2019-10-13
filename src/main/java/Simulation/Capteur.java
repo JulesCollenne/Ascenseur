@@ -7,10 +7,10 @@ public class Capteur extends Thread {
 
     private volatile Moniteur moniteur;
 
-    int capteurs[] = new int[11];
+    private int capteurs[] = new int[11];
 
-    int lastYdetected = 750;
-    boolean detection = false;
+    private int lastYdetected = 750;
+    private boolean detection = false;
 
     public Capteur(Moniteur moniteur, int initial, int floorHeight){
         this.moniteur = moniteur;
