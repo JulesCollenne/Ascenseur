@@ -46,7 +46,6 @@ public class Moniteur {
         return currentCabineRequest > -1;
     }
 
-    //TODO Quand on appuie sur un bouton interne alors que la cabone bouge, elle change instantanément de direction : Elle ne devrait pas
     /**
      * ajoute la requete faite depuis la cabine dans la file d'attente
      * @param numFloor le numéro de l'étage demandé
