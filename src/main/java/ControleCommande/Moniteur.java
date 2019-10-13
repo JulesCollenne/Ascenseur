@@ -128,7 +128,7 @@ public class Moniteur {
     private void resetCabine(){
         goingUp = false;
         currentDestination = 0;
-        if(currentFloor == 0 || currentFloor == 1) {
+        if(currentFloor < 1) {
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
         else {
@@ -230,8 +230,6 @@ public class Moniteur {
     }
 
     private int searchClosestFloor(){
-
-
         int min = 10;
         int floor = 10;
 
@@ -320,18 +318,23 @@ public class Moniteur {
         int etagesRestant;
         cabine.estDetecte = true;
 
-        if(goingUp) {
-            currentFloor++;
-        }
-        else {
-            currentFloor--;
-        }
-
         etagesRestant = Math.abs(currentDestination - currentFloor);
 
         if(etagesRestant == 1){
             cabine.estDetecte = false;
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
+        }
+        if(etagesRestant == 0){
+            cabine.estDetecte = false;
+            cabine.currentMode = Cabine.mode.Arret;
+            return;
+        }
+
+        if(goingUp) {
+            currentFloor++;
+        }
+        else {
+            currentFloor--;
         }
     }
 

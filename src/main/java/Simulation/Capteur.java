@@ -21,15 +21,21 @@ public class Capteur extends Thread {
 
     private void detecteCabine(){
 
-        int getY = moniteur.cabine.position_y_inf;
+        int cabineY = moniteur.cabine.position_y_inf;
+
+        if(cabineY == lastYdetected) {
+            detection = false;
+            return;
+        }
 
         for(int i = 0; i<10; i++){
-            if(capteurs[i] == getY){
-                if(getY != lastYdetected){
-                    lastYdetected = getY;
-                    detection = true;
-                }
+            if(capteurs[i] == cabineY){
+                lastYdetected = cabineY;
+                detection = true;
             }
+        }
+        if(!detection){
+            lastYdetected = -1;
         }
     }
 
@@ -47,5 +53,4 @@ public class Capteur extends Thread {
             }
         }
     }
-
 }
