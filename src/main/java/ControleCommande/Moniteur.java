@@ -20,6 +20,7 @@ public class Moniteur {
     private boolean floorRequest[] = new boolean[10];
     private boolean arretUrgence = false;
     private int currentDestination = -1;
+    private boolean entreDeuxEtages = false;
 
     public Moniteur(){
         for(int i=0; i<10; i++){
@@ -113,6 +114,10 @@ public class Moniteur {
             upQueue.clear();
             downQueue.clear();
             currentCabineRequest = -1;
+
+            if(cabine.currentMode == Cabine.mode.Monter || cabine.currentMode == Cabine.mode.Descendre || cabine.currentMode == Cabine.mode.ArretProchainNiv)
+                entreDeuxEtages = true;
+
             for(int i =0; i<10; i++)
                 floorRequest[i] = false;
             cabine.currentMode = Cabine.mode.ArretUrgence;
@@ -123,15 +128,18 @@ public class Moniteur {
     }
 
     /**
-     * Après le second appui de l'aret d'urgence, fait redescndre la cabine au RDC
+     * Après le second appui de l'arret d'urgence, fait redescndre la cabine au RDC
      */
     private void resetCabine(){
         goingUp = false;
         currentDestination = 0;
-        if(currentFloor < 1) {
+        if(currentFloor < 1 && entreDeuxEtages) {
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
-        else {
+        if(currentFloor < 1 && !entreDeuxEtages){
+            cabine.currentMode = Cabine.mode.Arret;
+        }
+        if(currentFloor >= 1) {
             cabine.currentMode = Cabine.mode.Descendre;
         }
     }
@@ -319,7 +327,15 @@ public class Moniteur {
         cabine.estDetecte = true;
 
         if(arretUrgence){
+            if(!entreDeuxEtages) {
+                if (goingUp) {
+                    currentFloor++;
+                } else {
+                    currentFloor--;
+                }
+            }
             etagesRestant = Math.abs(currentDestination - currentFloor);
+            System.out.println(entreDeuxEtages);
             if(etagesRestant == 1){
                 cabine.estDetecte = false;
                 cabine.currentMode = Cabine.mode.ArretProchainNiv;
@@ -328,14 +344,8 @@ public class Moniteur {
                 cabine.estDetecte = false;
                 cabine.currentMode = Cabine.mode.Arret;
                 arretUrgence = false;
+                entreDeuxEtages = false;
                 return;
-            }
-
-            if(goingUp) {
-                currentFloor++;
-            }
-            else {
-                currentFloor--;
             }
         }
         else {
@@ -355,6 +365,7 @@ public class Moniteur {
                 cabine.currentMode = Cabine.mode.Arret;
             }
         }
+        entreDeuxEtages = false;
     }
 
     /**
