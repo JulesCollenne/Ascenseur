@@ -16,6 +16,7 @@ public class Moniteur {
 
     public int currentFloor = 0;
     public boolean goingUp = true;
+    public boolean goingUpAvantUrgence = true;
     private int currentCabineRequest = -1;
     private boolean floorRequest[] = new boolean[10];
     private boolean arretUrgence = false;
@@ -144,6 +145,7 @@ public class Moniteur {
      * Après le second appui de l'arret d'urgence, fait redescndre la cabine au RDC
      */
     private void resetCabine(){
+        goingUpAvantUrgence = goingUp;
         goingUp = false;
         currentDestination = 0;
         if(currentFloor < 1 && entreDeuxEtages) {
@@ -423,7 +425,7 @@ public class Moniteur {
         cabine.estDetecte = true;
 
         if(arretUrgence){
-            if(entreDeuxEtages && !goingUp)
+            if(entreDeuxEtages && !goingUpAvantUrgence)
                 currentFloor--;
             if(!entreDeuxEtages) {
                 if (goingUp) {
