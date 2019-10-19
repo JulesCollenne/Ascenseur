@@ -443,7 +443,7 @@ public class Moniteur {
                 arretUrgence = false;
                 entreDeuxEtages = false;
                 return;
-            }
+            }//
         }
         else {
             if (goingUp) {
