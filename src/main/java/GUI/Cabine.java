@@ -84,7 +84,7 @@ public class Cabine extends Thread {
      */
     public void run(){
         while(true){
-            System.out.println(currentMode);
+            //System.out.println(moniteur.goingUp);
             switch(currentMode){
                 case Monter:
                     afkTime = 0;

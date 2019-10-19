@@ -217,8 +217,7 @@ public class Moniteur {
                     }
                 }
                 if(nearest == 10 && downQueue.size() != 0){
-                    goingUp = false;
-                    return searchClosestFloor();
+                    return searchFarFloorDown();
                 }
             }
             else{
@@ -229,32 +228,41 @@ public class Moniteur {
                     }
                 }
                 if(nearest == 10){
-                    goingUp = true;
-                    return searchClosestFloor();
+                    return searchFarFloorUp();
                 }
             }
             return nearestInd;
         }
     }
 
-    private int searchClosestFloor(){
-        int min = 10;
+    private int searchFarFloorDown(){
+        int max = 0;
         int floor = 10;
 
-        for (Integer anUpQueue : upQueue) {
-            if (Math.abs(currentFloor - anUpQueue) < min) {
-                min = Math.abs(currentFloor - anUpQueue);
-                floor = anUpQueue;
-            }
-        }
         for (Integer aDownQueue : downQueue) {
-            if (Math.abs(currentFloor - aDownQueue) < min) {
-                min = Math.abs(currentFloor - aDownQueue);
+            if (Math.abs(currentFloor - aDownQueue) > max) {
+                max = Math.abs(currentFloor - aDownQueue);
                 floor = aDownQueue;
             }
         }
 
         goingUp = currentFloor - floor <= 0;
+
+        return floor;
+    }
+    private int searchFarFloorUp(){
+        int max = 0;
+        int floor = 10;
+
+        for (Integer aUpQueue : upQueue) {
+            if (Math.abs(currentFloor - aUpQueue) > max) {
+                max = Math.abs(currentFloor - aUpQueue);
+                floor = aUpQueue;
+            }
+        }
+
+        goingUp = currentFloor - floor <= 0;
+        System.out.println(floor);
 
         return floor;
     }
@@ -295,6 +303,7 @@ public class Moniteur {
       */
     public void isStop(){
         Integer object = currentFloor;
+        currentCabineRequest = -1;
 
         if(object == currentCabineRequest){
             currentCabineRequest = -1;
