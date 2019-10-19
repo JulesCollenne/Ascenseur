@@ -1,3 +1,5 @@
+package GUI;
+
 import ControleCommande.Moniteur;
 import GUI.Fenetre;
 

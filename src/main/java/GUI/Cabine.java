@@ -117,7 +117,7 @@ public class Cabine extends Thread {
                         if((moniteur.currentFloor != 0) && (afkTime >= 3))
                             moniteur.detectAFK();
                         moniteur.isStop();
-                        sleep(2000);
+                        sleep(1000);
                         afkTime++;
                     } catch (InterruptedException e) {
                         e.printStackTrace();

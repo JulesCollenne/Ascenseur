@@ -57,13 +57,11 @@ public class Moniteur {
      */
     public void insideRequest(int numFloor){
         if(requeteInterneValide(numFloor)){
-            System.out.println(currentFloor+ ", "+currentDestination);
             if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){
                     currentCabineRequest = numFloor;
                     upQueue.add(numFloor);
                     if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
-                        System.out.println("good");
                         currentDestination = searchNextFloor();
                         goToFloor(currentDestination, goingUp);
                     }
@@ -74,7 +72,6 @@ public class Moniteur {
                     currentCabineRequest = numFloor;
                     downQueue.add(numFloor);
                     if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
-                        System.out.println("good");
                         currentDestination = searchNextFloor();
                         goToFloor(currentDestination, goingUp);
                     }
@@ -100,19 +97,16 @@ public class Moniteur {
      */
     public void outSideRequest(int numFloor, boolean isAskingUp){
         if(requeteExterneValide(numFloor)) {
-            System.out.println(currentFloor+ ", "+currentDestination);
             floorRequest[numFloor] = true;
             if (isAskingUp) {
                 upQueue.add(numFloor);
                 if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
-                    System.out.println("good");
                     currentDestination = searchNextFloor();
                     goToFloor(currentDestination, goingUp);
                 }
             } else {
                 downQueue.add(numFloor);
                 if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
-                    System.out.println("good");
                     currentDestination = searchNextFloor();
                     goToFloor(currentDestination, goingUp);
                 }
@@ -229,10 +223,7 @@ public class Moniteur {
         }
         else{
             if (up) {
-                System.out.println("je cherche montée");
-
                 if(isThereRequest(true, true)) {
-                    System.out.println("close");
                     if(isMoving)
                         temp = currentFloor + 1;
                     else
@@ -257,8 +248,6 @@ public class Moniteur {
             }
             else{
                 if(isThereRequest(false, false)) {
-                    System.out.println("je cherche descente");
-
                     if(isMoving)
                         temp = currentFloor - 1;
                     else
@@ -363,7 +352,6 @@ public class Moniteur {
         }
 
         goingUp = currentFloor - floor <= 0;
-        System.out.println(floor);
 
         return floor;
     }
@@ -379,8 +367,6 @@ public class Moniteur {
         currentDestination = floor;
         goingUp = up;
         isMoving = true;
-
-        System.out.println("je vais a " +floor);
 
         if(Math.abs(currentDestination - currentFloor) > 1) {
             if (up) {
@@ -437,6 +423,8 @@ public class Moniteur {
         cabine.estDetecte = true;
 
         if(arretUrgence){
+            if(entreDeuxEtages && !goingUp)
+                currentFloor--;
             if(!entreDeuxEtages) {
                 if (goingUp) {
                     currentFloor++;
@@ -445,7 +433,6 @@ public class Moniteur {
                 }
             }
             etagesRestant = Math.abs(currentDestination - currentFloor);
-            System.out.println(entreDeuxEtages);
             if(etagesRestant == 1){
                 cabine.estDetecte = false;
                 cabine.currentMode = Cabine.mode.ArretProchainNiv;
