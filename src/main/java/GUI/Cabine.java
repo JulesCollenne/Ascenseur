@@ -84,15 +84,16 @@ public class Cabine extends Thread {
      */
     public void run(){
         while(true){
-            //System.out.println(moniteur.goingUp);
             switch(currentMode){
                 case Monter:
+                    moniteur.isMoving = true;
                     afkTime = 0;
                     goingUp = true;
                     position_y_sup -= speed;
                     position_y_inf -= speed;
                     break;
                 case Descendre:
+                    moniteur.isMoving = true;
                     afkTime = 0;
                     goingUp = false;
                     position_y_sup += speed;
@@ -102,11 +103,17 @@ public class Cabine extends Thread {
                     afkTime = 0;
                     break;
                 case ArretProchainNiv:
+                    moniteur.isMoving = true;
                     afkTime = 0;
                     stopNextFloor();
                     break;
                 case Arret:
                     try {
+                        if(afkTime >= 1 && moniteur.resteRequete()) {
+                            moniteur.currentDestination = moniteur.searchNextFloor();
+                            moniteur.goToFloor(moniteur.currentDestination, moniteur.goingUp);
+                        }
+
                         if((moniteur.currentFloor != 0) && (afkTime >= 3))
                             moniteur.detectAFK();
                         moniteur.isStop();

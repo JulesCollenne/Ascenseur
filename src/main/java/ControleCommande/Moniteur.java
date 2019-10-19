@@ -19,8 +19,9 @@ public class Moniteur {
     private int currentCabineRequest = -1;
     private boolean floorRequest[] = new boolean[10];
     private boolean arretUrgence = false;
-    private int currentDestination = -1;
+    public int currentDestination = 100;
     private boolean entreDeuxEtages = false;
+    public boolean isMoving = false;
 
     public Moniteur(){
         for(int i=0; i<10; i++){
@@ -56,18 +57,27 @@ public class Moniteur {
      */
     public void insideRequest(int numFloor){
         if(requeteInterneValide(numFloor)){
+            System.out.println(currentFloor+ ", "+currentDestination);
             if(numFloor > currentFloor){
                 if(!upQueue.contains(numFloor)){
                     currentCabineRequest = numFloor;
                     upQueue.add(numFloor);
-                    goToFloor(searchNextFloor(), goingUp);
+                    if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
+                        System.out.println("good");
+                        currentDestination = searchNextFloor();
+                        goToFloor(currentDestination, goingUp);
+                    }
                 }
             }
             else{
                 if(!downQueue.contains(numFloor)){
                     currentCabineRequest = numFloor;
                     downQueue.add(numFloor);
-                    goToFloor(searchNextFloor(), goingUp);
+                    if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
+                        System.out.println("good");
+                        currentDestination = searchNextFloor();
+                        goToFloor(currentDestination, goingUp);
+                    }
                 }
             }
             detecteCapteurActuel();
@@ -90,13 +100,22 @@ public class Moniteur {
      */
     public void outSideRequest(int numFloor, boolean isAskingUp){
         if(requeteExterneValide(numFloor)) {
+            System.out.println(currentFloor+ ", "+currentDestination);
             floorRequest[numFloor] = true;
             if (isAskingUp) {
                 upQueue.add(numFloor);
-                goToFloor(searchNextFloor(), goingUp);
+                if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
+                    System.out.println("good");
+                    currentDestination = searchNextFloor();
+                    goToFloor(currentDestination, goingUp);
+                }
             } else {
                 downQueue.add(numFloor);
-                goToFloor(searchNextFloor(), goingUp);
+                if(isMoving && Math.abs(currentDestination - currentFloor) > 1) {
+                    System.out.println("good");
+                    currentDestination = searchNextFloor();
+                    goToFloor(currentDestination, goingUp);
+                }
             }
         }
     }
@@ -149,38 +168,37 @@ public class Moniteur {
      * cherche le prochain arrêt de la cabine
      * @return le prochain arret de la cabine
      */
-    private int searchNextFloor(){
+    public int searchNextFloor(){
         /*System.out.println("upQueue: ");
         printList(upQueue);
         System.out.println("downQueue: ");
         printList(downQueue);*/
 
         int maxFloor = 9;
-        if(currentFloor == maxFloor){
+        if (currentFloor == maxFloor) {
             goingUp = false;
             return nearestRequest(false);
         }
-        if(currentFloor == 0){
+        if (currentFloor == 0) {
             goingUp = true;
             return nearestRequest(true);
         }
-        if(uneSeuleRequete()){
+        if (uneSeuleRequete()) {
             int tempNextFloor = nearestRequest(true);
-            if(tempNextFloor> currentFloor){
+            if (tempNextFloor > currentFloor) {
                 goingUp = true;
                 return tempNextFloor;
-            }
-            else{
+            } else {
                 goingUp = false;
                 return tempNextFloor;
             }
         }
-        if(goingUp){
+        if (goingUp) {
             return nearestRequest(true);
-        }
-        else{
+        } else {
             return nearestRequest(false);
         }
+
     }
 
     /**
@@ -200,6 +218,7 @@ public class Moniteur {
     private int nearestRequest(boolean up) {
         int nearest = 10;
         int nearestInd = 10;
+        int temp = 0;
 
         if(uneSeuleRequete()){
             if(upQueue.size()>0){
@@ -210,29 +229,111 @@ public class Moniteur {
         }
         else{
             if (up) {
-                for (Integer anUpQueue : upQueue) {
-                    if ((currentFloor + 1 < anUpQueue) && (anUpQueue - currentFloor + 1 < nearest) || ((cabine.currentMode == Cabine.mode.Arret) && (currentFloor < anUpQueue) && (anUpQueue - currentFloor < nearest))) {
-                        nearest = anUpQueue - currentFloor + 1;
-                        nearestInd = anUpQueue;
+                System.out.println("je cherche montée");
+
+                if(isThereRequest(true, true)) {
+                    System.out.println("close");
+                    if(isMoving)
+                        temp = currentFloor + 1;
+                    else
+                        temp = currentFloor;
+                    for (Integer anUpQueue : upQueue) {
+                        if ((temp < anUpQueue) && (anUpQueue - temp < nearest)) {
+                            nearest = anUpQueue - temp;
+                            nearestInd = anUpQueue;
+                        }
                     }
+                    return nearestInd;
                 }
-                if(nearest == 10 && downQueue.size() != 0){
-                    return searchFarFloorDown();
+                else{
+                    if(isThereRequest(true, false)){
+                        return getFarRequest(true, false);
+                    }
+                    else{
+                        goingUp = false;
+                        return nearestRequest(false);
+                    }
                 }
             }
             else{
-                for (Integer aDownQueue : downQueue) {
-                    if ((currentFloor - 1 > aDownQueue) && (currentFloor - 1 - aDownQueue < nearest)) {
-                        nearest = currentFloor - 1 - aDownQueue;
-                        nearestInd = aDownQueue;
+                if(isThereRequest(false, false)) {
+                    System.out.println("je cherche descente");
+
+                    if(isMoving)
+                        temp = currentFloor - 1;
+                    else
+                        temp = currentFloor;
+                    for (Integer aDownQueue : downQueue) {
+                        if ((temp > aDownQueue) && (temp - aDownQueue < nearest)) {
+                            nearest = temp - aDownQueue;
+                            nearestInd = aDownQueue;
+                        }
+                    }
+
+                    return nearestInd;
+                }else {
+                    if(isThereRequest(false, true)){
+                        return getFarRequest(false, true);
+                    }
+                    else{
+                        goingUp = true;
+                        return nearestRequest(true);
                     }
                 }
-                if(nearest == 10){
-                    return searchFarFloorUp();
-                }
             }
-            return nearestInd;
         }
+    }
+
+    public int getFarRequest(boolean sens, boolean type){
+
+        int max = 0;
+        int current = currentFloor;
+
+        if(sens){
+            if(type){
+
+                for (Integer aupQueue : upQueue) {
+                    if ((aupQueue - currentFloor) > max) {
+                        max = aupQueue - currentFloor;
+                        current = aupQueue;
+                    }
+                }
+
+            }
+            else {
+
+                for (Integer adownQueue : downQueue) {
+                    if ((adownQueue - currentFloor) > max) {
+                        max = adownQueue - currentFloor;
+                        current = adownQueue;
+                    }
+                }
+
+            }
+        }
+        else{
+            if(type){
+
+                for (Integer aupQueue : upQueue) {
+                    if ((currentFloor - aupQueue) > max) {
+                        max = aupQueue - currentFloor;
+                        current = aupQueue;
+                    }
+                }
+
+            }
+            else {
+
+                for (Integer adownQueue : downQueue) {
+                    if ((currentFloor - adownQueue) > max) {
+                        max = adownQueue - currentFloor;
+                        current = adownQueue;
+                    }
+                }
+
+            }
+        }
+        return current;
     }
 
     private int searchFarFloorDown(){
@@ -274,9 +375,12 @@ public class Moniteur {
      * @param floor l'etage choisi
      * @param up si l'on va en haut
      */
-    private void goToFloor(int floor, boolean up){
+    public void goToFloor(int floor, boolean up){
         currentDestination = floor;
         goingUp = up;
+        isMoving = true;
+
+        System.out.println("je vais a " +floor);
 
         if(Math.abs(currentDestination - currentFloor) > 1) {
             if (up) {
@@ -294,7 +398,7 @@ public class Moniteur {
      *
      * @return true s'il n'y a aucune requete dans les files
      */
-    private boolean aucuneRequete(){
+    public boolean resteRequete(){
         return upQueue.size() > 0 || downQueue.size() > 0;
     }
 
@@ -304,7 +408,7 @@ public class Moniteur {
     public void isStop(){
         Integer object = currentFloor;
         currentCabineRequest = -1;
-
+        isMoving = false;
         if(object == currentCabineRequest){
             currentCabineRequest = -1;
         }
@@ -313,9 +417,6 @@ public class Moniteur {
         downQueue.remove(object);
         arretUrgence = false;
 
-        if(aucuneRequete()){
-            goToFloor(searchNextFloor(), goingUp);
-        }
     }
 
     /**
@@ -392,6 +493,40 @@ public class Moniteur {
             cabine.currentMode = Cabine.mode.ArretProchainNiv;
         }
     }
+
+    public boolean isThereRequest(boolean sens, boolean type) {
+        if (sens) {
+            if (type) {
+                for (Integer floor : upQueue) {
+                    if (floor - currentFloor > 0) {
+                        return true;
+                    }
+                }
+            } else {
+                for (Integer floor : downQueue) {
+                    if (floor - currentFloor > 0) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            if (type) {
+                for (Integer floor : upQueue) {
+                    if (currentFloor - floor > 0) {
+                        return true;
+                    }
+                }
+            } else {
+                for (Integer floor : downQueue) {
+                    if (currentFloor - floor > 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
      * S'il n'y a aucune requete, aller au RDC
